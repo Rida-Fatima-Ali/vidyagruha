@@ -1,0 +1,493 @@
+@import url("https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700&display=swap");
+@import "tailwindcss";
+
+/*
+  CampusOne design system — "Human Editorial".
+
+  A calm, premium university product language: warm paper neutrals,
+  one restrained teal accent, editorial typography (Instrument Serif
+  for display moments · Satoshi/Inter for UI · IBM Plex Mono for
+  metadata), generous whitespace and quiet, purposeful motion.
+
+  Design principle: the interface must look complete when nothing moves.
+    background   soft paper #F7F6F2 (light) · warm graphite #141414 (dark)
+    foreground   warm ink #28251D (light) · ivory #F4F1E9 (dark)
+    primary      refined teal #01696F — identity, actions, active states.
+                 Used sparingly; never decorative.
+    success/warning/destructive/info — muted semantic states only.
+
+  Depth philosophy (levels, not everything-elevated):
+    L0 content on the page · L1 hairline divider · L2 soft surface
+    · L3 glass floating panel (navigation, popovers only)
+*/
+
+/* ================================================================
+   LIGHT THEME — paper + teal
+   ================================================================ */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* Atmosphere */
+  --background: #f7f6f2;
+  --foreground: #28251d;
+
+  /* Card surfaces */
+  --card: #fdfcfa;
+  --card-foreground: #28251d;
+
+  /* Popovers */
+  --popover: #ffffff;
+  --popover-foreground: #28251d;
+
+  /* Muted */
+  --muted: #efede6;
+  --muted-foreground: #77736b;
+
+  /* Primary — refined teal */
+  --primary: #01696f;
+  --primary-foreground: #f3fbfa;
+
+  /* Secondary */
+  --secondary: #edebe4;
+  --secondary-foreground: #3a372f;
+
+  /* Accent */
+  --accent: #e9e7df;
+  --accent-foreground: #28251d;
+
+  /* Success — muted sage (semantic health only) */
+  --success: #47795b;
+  --success-foreground: #f2f7f3;
+
+  /* Warning — quiet ochre */
+  --warning: #8f6511;
+  --warning-foreground: #fbf5e8;
+
+  /* Destructive — muted brick */
+  --destructive: #a63a28;
+  --destructive-foreground: #fdf3f0;
+
+  /* Info — desaturated slate */
+  --info: #5b6b7c;
+  --info-foreground: #f5f8fb;
+
+  /* Borders & inputs — warm hairlines */
+  --border: rgb(40 37 29 / 0.08);
+  --input: rgb(40 37 29 / 0.14);
+  --ring: #01696f;
+
+  /* Glass surfaces — reserved for navigation & floating panels */
+  --surface: rgb(255 255 255 / 0.72);
+  --surface-strong: rgb(255 255 255 / 0.85);
+  --surface-elevated: rgb(255 255 255 / 0.97);
+  --surface-2: #f0eee7;
+  --surface-3: #e7e4db;
+  --surface-4: #ddd9cd;
+
+  /* Whisper of top light on cards */
+  --card-highlight: rgb(255 255 255 / 0.55);
+
+  /* Shadows — objects resting gently above the surface */
+  --shadow-card: 0 1px 2px rgb(40 37 29 / 0.04),
+    0 4px 12px -6px rgb(40 37 29 / 0.06);
+  --shadow-lifted: 0 1px 2px rgb(40 37 29 / 0.05),
+    0 10px 28px -12px rgb(40 37 29 / 0.12);
+  --shadow-float: 0 2px 6px rgb(40 37 29 / 0.05),
+    0 20px 44px -20px rgb(40 37 29 / 0.16);
+  --shadow-inset-highlight: inset 0 1px 0 rgb(255 255 255 / 0.6);
+}
+
+/* ================================================================
+   DARK THEME — warm graphite + teal (same product, darker room)
+   ================================================================ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Atmosphere */
+  --background: #141414;
+  --foreground: #f4f1e9;
+
+  /* Card surfaces */
+  --card: #1b1b1a;
+  --card-foreground: #f4f1e9;
+
+  /* Popovers */
+  --popover: #212120;
+  --popover-foreground: #f4f1e9;
+
+  /* Muted */
+  --muted: #222220;
+  --muted-foreground: #a9a59d;
+
+  /* Primary — the same teal, lifted for legibility on graphite */
+  --primary: #63b0b4;
+  --primary-foreground: #0c2021;
+
+  /* Secondary */
+  --secondary: #242423;
+  --secondary-foreground: #dedbd0;
+
+  /* Accent */
+  --accent: #262625;
+  --accent-foreground: #f4f1e9;
+
+  /* Success — sage */
+  --success: #7fae8e;
+  --success-foreground: #0c1a11;
+
+  /* Warning — ochre */
+  --warning: #d2a54c;
+  --warning-foreground: #201703;
+
+  /* Destructive */
+  --destructive: #cd6753;
+  --destructive-foreground: #fff6f1;
+
+  /* Info */
+  --info: #97a6b4;
+  --info-foreground: #10161d;
+
+  /* Borders & inputs */
+  --border: rgb(244 241 233 / 0.09);
+  --input: rgb(244 241 233 / 0.16);
+  --ring: #63b0b4;
+
+  /* Glass surfaces */
+  --surface: rgb(28 28 27 / 0.72);
+  --surface-strong: rgb(31 31 30 / 0.85);
+  --surface-elevated: rgb(38 38 37 / 0.97);
+  --surface-2: #1f1f1e;
+  --surface-3: #272726;
+  --surface-4: #30302e;
+
+  /* Whisper of top light on cards */
+  --card-highlight: rgb(244 241 233 / 0.03);
+
+  /* Shadows — near-black, barely present */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 12px -6px rgb(0 0 0 / 0.35);
+  --shadow-lifted: 0 1px 2px rgb(0 0 0 / 0.3),
+    0 10px 28px -12px rgb(0 0 0 / 0.45);
+  --shadow-float: 0 2px 6px rgb(0 0 0 / 0.3),
+    0 20px 44px -20px rgb(0 0 0 / 0.55);
+  --shadow-inset-highlight: inset 0 1px 0 rgb(244 241 233 / 0.05);
+}
+
+/* ================================================================
+   TAILWIND V4 THEME BRIDGE
+   ================================================================ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+
+  /* Legacy aliases — historical class names resolve to the unified palette */
+  --color-coral: var(--primary);
+  --color-coral-foreground: var(--primary-foreground);
+
+  /* Typography
+     Display: Instrument Serif (self-hosted) — major titles & greetings only.
+     Body/UI: Satoshi (Fontshare) with self-hosted Inter fallback.
+     Metadata: IBM Plex Mono — course codes, rooms, timestamps. */
+  --font-sans: "Satoshi", var(--font-inter), ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", sans-serif;
+  --font-heading: var(--font-sans);
+  --font-display: var(--font-instrument-serif), "Iowan Old Style", Georgia,
+    "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Radii — moderate, natural rounding */
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+
+  /* Shadows */
+  --shadow-card: var(--shadow-card);
+  --shadow-lifted: var(--shadow-lifted);
+  --shadow-float: var(--shadow-float);
+  --shadow-inset-highlight: var(--shadow-inset-highlight);
+
+  /* Motion — natural easing, nothing linear, nothing bouncy */
+  --ease-spatial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ================================================================
+   KEYFRAMES — entrance only; the interface is otherwise still
+   ================================================================ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================================================
+   BASE STYLES
+   ================================================================ */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01" on, "cv11" on;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+
+  /* Display headings — serif personality, used sparingly by composition.
+     h1 carries the editorial voice; h2–h6 stay quiet sans UI headings. */
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 2.25rem;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  h3 {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+
+  /* Selection — teal ink */
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+
+  /* Focus — visible, calm */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar — quiet */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+    border-radius: 9999px;
+    border: 2px solid var(--color-background);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--foreground) 30%, transparent);
+  }
+
+  /* Image defaults */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ================================================================
+   UTILITY CLASSES
+   ================================================================ */
+@layer utilities {
+  /* ---- Glass system — navigation rails & floating panels only ---- */
+  .glass-strong {
+    background-color: var(--surface-strong);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    backdrop-filter: blur(18px) saturate(1.15);
+  }
+
+  .glass-panel {
+    background-color: var(--surface);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    backdrop-filter: blur(16px) saturate(1.1);
+  }
+
+  /* Highest layer — popovers, dialogs, command palettes */
+  .glass-elevated {
+    background-color: var(--surface-elevated);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    backdrop-filter: blur(20px) saturate(1.2);
+  }
+
+  .glass-surface {
+    background-color: var(--surface);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    backdrop-filter: blur(16px) saturate(1.1);
+  }
+
+  /* ---- Surfaces --------------------------------------------------- */
+  .card-surface {
+    background-image: linear-gradient(
+      180deg,
+      var(--card-highlight),
+      transparent 34%
+    );
+    background-color: var(--card);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Technical metadata — course codes, rooms, timestamps, IDs only */
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.84em;
+    letter-spacing: -0.005em;
+  }
+
+  .scroll-soft {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--foreground) 20%, transparent)
+      transparent;
+  }
+
+  /* Card hover depth — the object lifts slightly toward the reader */
+  .card-hover-depth {
+    transition:
+      transform 0.25s var(--ease-spatial),
+      box-shadow 0.25s var(--ease-spatial),
+      border-color 0.25s ease;
+  }
+
+  .card-hover-depth:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lifted);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  /* Editorial kicker — small caps section label */
+  .kicker {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Display heading — hero-level serif type */
+  .display-hero {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.04;
+  }
+}
+
+/* ================================================================
+   MOBILE — reduce blur cost on constrained devices
+   ================================================================ */
+@media (max-width: 768px) {
+  .glass-strong {
+    -webkit-backdrop-filter: blur(12px) saturate(1.05);
+    backdrop-filter: blur(12px) saturate(1.05);
+  }
+
+  .glass-panel {
+    -webkit-backdrop-filter: blur(10px) saturate(1.05);
+    backdrop-filter: blur(10px) saturate(1.05);
+  }
+
+  .glass-elevated {
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+  }
+}
+
+/* ================================================================
+   REDUCED MOTION — content appears immediately
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
