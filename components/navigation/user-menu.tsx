@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, LogOut, WifiLow, WifiHigh } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ROLE_LABEL } from "@/constants/roles";
+import { useBandwidth } from "@/components/provider/bandwidth-provider";
 
 export function UserMenu() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { lowBandwidth, setLowBandwidth } = useBandwidth();
 
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
@@ -49,8 +51,9 @@ export function UserMenu() {
       >
         <Avatar name={user.name} size="sm" />
         <span className="hidden text-left sm:block">
-          <span className="block max-w-32 truncate text-sm font-medium leading-tight">
+          <span className="block max-w-32 truncate text-sm font-medium leading-tight flex items-center gap-1.5">
             {user.name}
+            {lowBandwidth && <span title="Lite mode active" className="inline-block h-2 w-2 rounded-full bg-success"></span>}
           </span>
           <span className="block text-[11px] leading-tight text-muted-foreground">
             {ROLE_LABEL[user.role]}
@@ -81,6 +84,21 @@ export function UserMenu() {
                   {user.email}
                 </p>
               </div>
+            </div>
+            <div className="p-1.5 border-b border-border/50">
+              <button
+                role="menuitem"
+                className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg hover:bg-surface-2 transition-colors text-sm"
+                onClick={() => setLowBandwidth(!lowBandwidth)}
+              >
+                <span className="flex items-center gap-2">
+                  {lowBandwidth ? <WifiLow className="h-4 w-4" /> : <WifiHigh className="h-4 w-4" />}
+                  Low-bandwidth mode
+                </span>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {lowBandwidth ? "ON" : "OFF"}
+                </span>
+              </button>
             </div>
             <div className="p-1.5">
               <Button

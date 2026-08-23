@@ -31,6 +31,7 @@ import { DEMO_NOW, DEMO_TODAY } from "@/constants/demo";
 const FACULTY_MODULES: ModuleGridItem[] = [
   { title: "Classes", description: "Your divisions, rosters and room slots.", icon: Presentation, href: "/faculty/classes" },
   { title: "Attendance", description: "Mark and review attendance for your classes.", icon: CalendarCheck, href: "/faculty/attendance" },
+  { title: "Cover Requests", description: "Post or accept lecture cover requests from colleagues.", icon: Users, href: "/faculty/cover-requests" },
   { title: "Assignments", description: "Create and manage class assignments.", icon: ClipboardList, href: "/faculty/assignments" },
   { title: "Submissions", description: "Review submitted, late and missing work.", icon: Inbox, href: "/faculty/submissions" },
   { title: "Materials", description: "Upload notes, slides and question papers.", icon: FolderOpen, href: "/faculty/materials" },

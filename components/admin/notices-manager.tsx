@@ -30,6 +30,7 @@ import type {
   AdminNoticeStatus,
 } from "@/types/admin";
 import type { NoticeCategory } from "@/types/student";
+import { OrganizationTree } from "@/components/admin/organization-tree";
 
 type StatusFilter = AdminNoticeStatus | "all";
 
@@ -199,6 +200,7 @@ function AdminNoticeDialog({
     notice?.publishAt ? notice.publishAt.slice(0, 16) : "2026-08-15T09:00",
   );
   const [formError, setFormError] = useState<string | null>(null);
+  const [orgTreeId, setOrgTreeId] = useState<string | null>("institution");
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -294,6 +296,10 @@ function AdminNoticeDialog({
                 ))}
               </Select>
             </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Audience Scope (Visual)</Label>
+            <OrganizationTree selectedId={orgTreeId} onSelect={setOrgTreeId} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">

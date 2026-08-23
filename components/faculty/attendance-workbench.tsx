@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   CheckCircle2,
   CheckCheck,
@@ -22,6 +22,7 @@ import { formatShortDate } from "@/utils/date";
 import { cn } from "@/utils/cn";
 import type { MarkStatus, SessionAttendance } from "@/types/attendance";
 import type { AttendanceSessionLite } from "@/types/attendance";
+import { AttendanceUndoPortal } from "@/components/ui/undo-toast";
 
 export interface WorkbenchRow {
   student: {
@@ -78,6 +79,9 @@ export function AttendanceWorkbench({
   });
   const [dirty, setDirty] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [undoMessage, setUndoMessage] = useState<string | null>(null);
+  const pendingPayloadRef = useRef<{ date: string; code: string; groupSlug: string; payload: { studentId: string; status: MarkStatus }[] } | null>(null);
+  const previousRecordsRef = useRef<Record<string, MarkStatus> | null>(null);
 
   const filtered = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -119,20 +123,39 @@ export function AttendanceWorkbench({
       studentId: row.student.id,
       status: records[row.student.id] ?? "present",
     }));
-    const ok = await saveManager.save(
-      session.date,
-      session.code,
-      session.groupSlug,
-      payload,
-    );
+    // Store previous records for potential undo
+    previousRecordsRef.current = { ...records };
+    pendingPayloadRef.current = { date: session.date, code: session.code, groupSlug: session.groupSlug, payload };
+    const presentCount = payload.filter((p) => p.status === "present").length;
+    setUndoMessage(`Attendance marked for ${presentCount} students`);
+  }
+
+  const commitSave = useCallback(async () => {
+    const pending = pendingPayloadRef.current;
+    if (!pending) return;
+    const ok = await saveManager.save(pending.date, pending.code, pending.groupSlug, pending.payload);
     if (ok) {
       setDirty(false);
       setJustSaved(true);
       onSaved();
     }
-  }
+    setUndoMessage(null);
+    pendingPayloadRef.current = null;
+  }, [saveManager, onSaved]);
+
+  const handleUndo = useCallback(() => {
+    if (previousRecordsRef.current) {
+      setRecords(previousRecordsRef.current);
+      previousRecordsRef.current = null;
+    }
+    pendingPayloadRef.current = null;
+    setUndoMessage(null);
+    setDirty(true);
+    setJustSaved(false);
+  }, []);
 
   return (
+    <>
     <Panel
       title={session.subject}
       description={`${session.start}–${session.end} · ${session.room} · ${formatShortDate(session.date)}`}
@@ -296,5 +319,11 @@ export function AttendanceWorkbench({
         </p>
       </footer>
     </Panel>
+    <AttendanceUndoPortal
+      message={undoMessage}
+      onUndo={handleUndo}
+      onExpire={() => void commitSave()}
+    />
+    </>
   );
 }
