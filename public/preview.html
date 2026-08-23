@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus One — Next-Generation Academic Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #030712;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100vw;
+    }
+    .font-heading {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    /* 3D Unfold Animation */
+    .unfold-char {
+      display: inline-block;
+      transform-origin: bottom center;
+      transform-style: preserve-3d;
+      animation: unfold 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+    }
+    @keyframes unfold {
+      0% {
+        opacity: 0;
+        transform: rotateX(-80deg) translateY(10px);
+        filter: blur(4px);
+      }
+      100% {
+        opacity: 1;
+        transform: rotateX(0deg) translateY(0);
+        filter: blur(0px);
+      }
+    }
+
+    /* Specular Button */
+    .specular-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.06) 100%);
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 0 25px rgba(1, 105, 111, 0.45), inset 0 1px 1px rgba(255,255,255,0.7);
+    }
+    .specular-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.6);
+      box-shadow: 0 0 35px rgba(14, 165, 233, 0.6), inset 0 1px 2px rgba(255,255,255,0.9);
+    }
+    .specular-btn:active {
+      transform: scale(0.98);
+    }
+    .specular-sheen {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .specular-btn:hover .specular-sheen {
+      transform: translateX(100%);
+    }
+
+    /* Magic Rings 3D */
+    .magic-ring {
+      position: absolute;
+      border-radius: 9999px;
+      transform-style: preserve-3d;
+    }
+    @keyframes spinClockwise {
+      from { transform: rotateZ(0deg); }
+      to { transform: rotateZ(360deg); }
+    }
+    @keyframes spinCounter {
+      from { transform: rotateZ(360deg); }
+      to { transform: rotateZ(0deg); }
+    }
+  </style>
+</head>
+<body class="w-full max-w-full overflow-x-hidden select-none bg-black text-white">
+
+  <!-- FIXED NAVBAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black/60 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] py-3.5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <!-- Left: Brand with Unfold Typography -->
+      <a href="#home" class="group flex items-center gap-3 outline-none text-white no-underline">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-400 p-0.5 shadow-[0_0_15px_rgba(1,105,111,0.5)]">
+          <div class="flex h-full w-full items-center justify-center rounded-[10px] bg-slate-950/90">
+            <svg class="h-4 w-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="font-heading font-bold text-lg sm:text-xl tracking-tight text-white flex items-center" id="unfold-brand">
+          <span class="unfold-char" style="animation-delay: 0.1s">C</span>
+          <span class="unfold-char" style="animation-delay: 0.14s">a</span>
+          <span class="unfold-char" style="animation-delay: 0.18s">m</span>
+          <span class="unfold-char" style="animation-delay: 0.22s">p</span>
+          <span class="unfold-char" style="animation-delay: 0.26s">u</span>
+          <span class="unfold-char" style="animation-delay: 0.3s">s</span>
+          <span class="inline-block w-2"></span>
+          <span class="unfold-char" style="animation-delay: 0.38s">O</span>
+          <span class="unfold-char" style="animation-delay: 0.42s">n</span>
+          <span class="unfold-char" style="animation-delay: 0.46s">e</span>
+        </div>
+      </a>
+
+      <!-- Center: Navigation -->
+      <nav class="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-4 py-1.5 backdrop-blur-md">
+        <a href="#home" class="px-4 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full hover:bg-white/[0.08] no-underline">Home</a>
+        <a href="#about" class="px-4 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full hover:bg-white/[0.08] no-underline">About</a>
+        <a href="#why-campus-one" class="px-4 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-colors rounded-full hover:bg-white/[0.08] no-underline">Features</a>
+      </nav>
+
+      <!-- Right: Specular Button -->
+      <div class="flex items-center gap-3">
+        <a href="/login" class="specular-btn px-5 py-2 text-sm font-medium text-white no-underline gap-2">
+          <div class="specular-sheen"></div>
+          <span class="relative z-10">View Campus One</span>
+          <svg class="relative z-10 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN 4 SECTIONS (TOTAL HEIGHT: 300vh, WIDTH: 100vw) -->
+  <main class="relative w-full max-w-full overflow-x-hidden flex flex-col">
+
+    <!-- SECTION 1: HERO (100vh) -->
+    <section id="home" class="relative w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center" style="height: 100vh; min-height: 100vh;">
+      <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="background: radial-gradient(ellipse 90% 60% at 50% 30%, #09373d 0%, #03181b 50%, #010c0e 100%);">
+        <canvas id="waves-canvas" class="w-full h-full block"></canvas>
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-cyan-500/20 blur-[120px] rounded-full"></div>
+        <div class="absolute inset-0 bg-radial-[circle_at_50%_30%]_from-transparent_via-black/20_to-black/80"></div>
+      </div>
+
+      <!-- Hero Content -->
+      <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center justify-center pt-12">
+        <div class="mb-6">
+          <div class="inline-flex items-center gap-2 rounded-full border border-teal-400/40 bg-teal-950/70 px-4 py-1.5 text-xs sm:text-sm font-medium text-teal-200 backdrop-blur-md shadow-[0_0_25px_rgba(20,184,166,0.35)]">
+            <span class="h-2 w-2 rounded-full bg-teal-400 animate-ping"></span>
+            <span>Futuristic Academic SaaS</span>
+          </div>
+        </div>
+
+        <h1 class="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
+          Welcome to <span class="bg-gradient-to-r from-teal-200 via-cyan-200 to-sky-300 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(14,165,233,0.5)]">Campus One</span>
+        </h1>
+
+        <div class="mt-6 sm:mt-8 max-w-2xl mx-auto space-y-2">
+          <p class="text-base sm:text-xl text-slate-100 font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Next-generation academic intelligence and institutional management.
+          </p>
+          <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Unifying students, faculty, and administration in one seamless ecosystem.
+          </p>
+        </div>
+
+        <div class="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
+          <a href="/login" class="specular-btn px-8 py-3.5 text-base font-medium text-white no-underline gap-2.5">
+            <div class="specular-sheen"></div>
+            <span class="relative z-10">View Campus One</span>
+            <svg class="relative z-10 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+
+          <a href="#about" class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm sm:text-base font-medium text-slate-100 backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:text-white hover:border-white/40 no-underline">
+            <span>Explore Campus One</span>
+            <svg class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-70">
+        <span class="text-[11px] uppercase tracking-widest text-slate-300 font-mono">Scroll</span>
+        <div class="w-4 h-7 rounded-full border border-white/30 flex items-start justify-center p-1">
+          <div class="w-1 h-1.5 rounded-full bg-cyan-400 animate-bounce"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: ABOUT (100vh) -->
+    <section id="about" class="relative w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center" style="height: 100vh; min-height: 100vh;">
+      <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none flex items-center justify-center" style="background: radial-gradient(ellipse 90% 70% at 50% 50%, #101a3d 0%, #080f24 60%, #030612 100%); perspective: 1200px;">
+        <div class="absolute h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-indigo-600/35 via-sky-500/25 to-purple-600/35 blur-[140px]"></div>
+        <div class="absolute h-64 w-64 rounded-full bg-cyan-400/30 blur-[80px]"></div>
+
+        <div id="gyro-rings" class="relative flex items-center justify-center w-full h-full transition-transform duration-300 ease-out" style="transform-style: preserve-3d; transform: rotateX(60deg) rotateY(0deg);">
+          <div class="magic-ring" style="width: 280px; height: 280px;">
+            <div class="w-full h-full rounded-full relative" style="border: 1.5px solid rgba(99, 102, 241, 0.7); box-shadow: 0 0 30px rgba(99, 102, 241, 0.7); animation: spinClockwise 16s linear infinite;">
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-sky-300 shadow-[0_0_18px_#38bdf8]"></div>
+              <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-indigo-300 shadow-[0_0_14px_#818cf8]"></div>
+            </div>
+          </div>
+          <div class="magic-ring" style="width: 440px; height: 440px;">
+            <div class="w-full h-full rounded-full relative" style="border: 1.5px solid rgba(56, 189, 248, 0.65); box-shadow: 0 0 35px rgba(56, 189, 248, 0.65); animation: spinCounter 24s linear infinite;">
+              <div class="absolute top-1/2 -left-2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-purple-300 shadow-[0_0_16px_#c084fc]"></div>
+              <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-cyan-200 shadow-[0_0_12px_#22d3ee]"></div>
+            </div>
+          </div>
+          <div class="magic-ring" style="width: 620px; height: 620px;">
+            <div class="w-full h-full rounded-full relative" style="border: 1.5px solid rgba(168, 85, 247, 0.55); box-shadow: 0 0 40px rgba(168, 85, 247, 0.55); animation: spinClockwise 32s linear infinite;">
+              <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-sky-300 shadow-[0_0_15px_#38bdf8]"></div>
+            </div>
+          </div>
+          <div class="magic-ring" style="width: 820px; height: 820px;">
+            <div class="w-full h-full rounded-full relative" style="border: 1px solid rgba(14, 165, 233, 0.4); box-shadow: 0 0 40px rgba(14, 165, 233, 0.4); animation: spinCounter 42s linear infinite;"></div>
+          </div>
+        </div>
+        <div class="absolute inset-0 bg-radial-[circle_at_50%_50%]_from-transparent_via-black/25_to-black/85"></div>
+      </div>
+
+      <!-- About Content -->
+      <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center justify-center">
+        <div class="mb-4">
+          <span class="text-xs uppercase tracking-[0.25em] font-semibold text-indigo-300 font-mono bg-indigo-950/70 px-4 py-1.5 rounded-full border border-indigo-500/40 backdrop-blur-md">
+            // 01 — Overview
+          </span>
+        </div>
+
+        <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
+          About <span class="bg-gradient-to-r from-indigo-200 via-sky-200 to-purple-300 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(99,102,241,0.5)]">Campus One</span>
+        </h2>
+
+        <div class="mt-6 sm:mt-8 max-w-2xl mx-auto space-y-2.5">
+          <p class="text-base sm:text-xl text-slate-100 font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Architected for precision, speed, and real-time institutional synchrony.
+          </p>
+          <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Empowering higher education with intuitive workflows and deep analytics.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WHY CAMPUS ONE (70vh) -->
+    <section id="why-campus-one" class="relative w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center" style="height: 70vh; min-height: 70vh;">
+      <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="background: radial-gradient(ellipse 90% 70% at 50% 50%, #03362e 0%, #051a29 60%, #020c15 100%);">
+        <canvas id="grid-canvas" class="w-full h-full block"></canvas>
+        <div class="absolute inset-0 bg-radial-[circle_at_50%_50%]_from-transparent_via-black/20_to-black/85"></div>
+      </div>
+
+      <!-- Why Content -->
+      <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center justify-center">
+        <div class="mb-4">
+          <span class="text-xs uppercase tracking-[0.25em] font-semibold text-emerald-300 font-mono bg-emerald-950/70 px-4 py-1.5 rounded-full border border-emerald-500/40 backdrop-blur-md">
+            // 02 — Architecture
+          </span>
+        </div>
+
+        <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
+          Why <span class="bg-gradient-to-r from-emerald-200 via-teal-200 to-cyan-300 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(16,185,129,0.5)]">Campus One</span>?
+        </h2>
+
+        <div class="mt-6 sm:mt-8 max-w-2xl mx-auto space-y-2.5">
+          <p class="text-base sm:text-xl text-slate-100 font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Purpose-built modular architecture designed for modern universities.
+          </p>
+          <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Frictionless governance, automated schedules, and unified campus life.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: FINAL CTA (30vh) -->
+    <section id="cta" class="relative w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center bg-[#09090b] border-t border-white/10" style="height: 30vh; min-height: 30vh;">
+      <div class="absolute inset-0 bg-radial-[circle_at_50%_0%]_from-white/[0.06]_to-transparent pointer-events-none"></div>
+
+      <!-- Final CTA Content -->
+      <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center justify-center py-4">
+        <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-snug drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+          Ready to Experience Campus One?
+        </h2>
+
+        <div class="mt-3 max-w-2xl mx-auto space-y-1">
+          <p class="text-sm sm:text-base text-slate-200 font-normal leading-relaxed">
+            Step into the future of unified campus operations and academic excellence.
+          </p>
+          <p class="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed">
+            Join students and faculty across institutes transforming their workflow today.
+          </p>
+        </div>
+
+        <div class="mt-5">
+          <a href="/login" class="specular-btn px-6 py-2.5 text-sm sm:text-base font-medium text-white no-underline gap-2">
+            <div class="specular-sheen"></div>
+            <span class="relative z-10">View Campus One</span>
+            <svg class="relative z-10 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 1. Mouse Gyro Tilt for Magic Rings
+    (function() {
+      const rings = document.getElementById('gyro-rings');
+      if (!rings) return;
+      window.addEventListener('mousemove', (e) => {
+        const xNorm = (e.clientX / window.innerWidth - 0.5) * 2;
+        const yNorm = (e.clientY / window.innerHeight - 0.5) * 2;
+        rings.style.transform = `rotateX(${60 + yNorm * 12}deg) rotateY(${xNorm * 18}deg)`;
+      });
+    })();
+
+    // 2. Interactive Mouse-Tracking Silk Gradient Waves
+    (function() {
+      const canvas = document.getElementById('waves-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      let width, height, time = 0;
+      let mouseX = 0.5, mouseY = 0.5, targetMX = 0.5, targetMY = 0.5;
+
+      function resize() {
+        width = canvas.parentElement.clientWidth || window.innerWidth;
+        height = canvas.parentElement.clientHeight || window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        targetMX = e.clientX / width;
+        targetMY = e.clientY / height;
+      });
+
+      const waves = [
+        { freq: 0.0018, amp: 80, speed: 0.015, phase: 0, colors: ["rgba(1, 105, 111, 0.8)", "rgba(14, 165, 233, 0.45)", "rgba(2, 14, 18, 0.95)"], stroke: "rgba(45, 212, 191, 0.4)", y: 0.65 },
+        { freq: 0.0028, amp: 60, speed: 0.02, phase: 1.25, colors: ["rgba(16, 185, 129, 0.65)", "rgba(1, 105, 111, 0.35)", "rgba(3, 20, 24, 0.98)"], stroke: "rgba(52, 211, 153, 0.35)", y: 0.55 },
+        { freq: 0.0014, amp: 100, speed: 0.01, phase: 2.5, colors: ["rgba(56, 189, 248, 0.7)", "rgba(99, 102, 241, 0.35)", "rgba(2, 8, 14, 0.99)"], stroke: "rgba(56, 189, 248, 0.45)", y: 0.74 },
+        { freq: 0.0022, amp: 50, speed: 0.018, phase: 4.1, colors: ["rgba(45, 212, 191, 0.5)", "rgba(4, 15, 20, 1)"], stroke: "rgba(45, 212, 191, 0.3)", y: 0.82 }
+      ];
+
+      function render() {
+        mouseX += (targetMX - mouseX) * 0.05;
+        mouseY += (targetMY - mouseY) * 0.05;
+
+        ctx.clearRect(0, 0, width, height);
+        const bg = ctx.createLinearGradient(0, 0, 0, height);
+        bg.addColorStop(0, "#020f12");
+        bg.addColorStop(0.45, "#04242a");
+        bg.addColorStop(1, "#01090b");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, width, height);
+
+        waves.forEach((w, idx) => {
+          ctx.beginPath();
+          ctx.moveTo(0, height);
+          const currentPhase = time * w.speed + w.phase;
+          const baseY = height * w.y + (mouseY - 0.5) * 50 * (idx + 1) * 0.35;
+          for (let x = 0; x <= width; x += 6) {
+            const normX = x / width;
+            const dist = Math.abs(normX - mouseX);
+            const mouseInf = Math.max(0, 1 - dist * 2.5) * 30;
+            const y = baseY + Math.sin(x * w.freq + currentPhase) * w.amp + Math.cos(x * w.freq * 0.6 + currentPhase * 0.7) * (w.amp * 0.35) - mouseInf;
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(width, height);
+          ctx.closePath();
+          const grad = ctx.createLinearGradient(0, baseY - w.amp, 0, height);
+          w.colors.forEach((c, i) => grad.addColorStop(i / (w.colors.length - 1), c));
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.strokeStyle = w.stroke;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        });
+        time++;
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+
+    // 3. Interactive Cursor Spotlight Shape Grid
+    (function() {
+      const canvas = document.getElementById('grid-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      let width, height, time = 0;
+      let mouseX = -1000, mouseY = -1000;
+
+      function resize() {
+        width = canvas.parentElement.clientWidth || window.innerWidth;
+        height = canvas.parentElement.clientHeight || window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+      });
+      window.addEventListener('mouseleave', () => {
+        mouseX = -1000; mouseY = -1000;
+      });
+
+      const gridSize = 42;
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        const bg = ctx.createLinearGradient(0, 0, 0, height);
+        bg.addColorStop(0, "#051421");
+        bg.addColorStop(0.5, "#032822");
+        bg.addColorStop(1, "#05141e");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.12)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= width; x += gridSize) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+        }
+        for (let y = 0; y <= height; y += gridSize) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+        }
+
+        const cols = Math.ceil(width / gridSize);
+        const rows = Math.ceil(height / gridSize);
+        for (let i = 0; i <= cols; i++) {
+          for (let j = 0; j <= rows; j++) {
+            const x = i * gridSize;
+            const y = j * gridSize;
+            const distMouse = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
+            const mouseGlow = distMouse < 180 ? (1 - distMouse / 180) : 0;
+            const distCenter = Math.sqrt(Math.pow(x - width / 2, 2) + Math.pow(y - height / 2, 2));
+            const wave = Math.sin(distCenter * 0.02 - time * 0.035);
+            const waveAlpha = wave > 0.4 ? ((wave - 0.4) / 0.6) * 0.5 : 0;
+            const totalAlpha = Math.min(1, waveAlpha + mouseGlow * 0.9);
+
+            if (totalAlpha > 0.05) {
+              ctx.fillStyle = `rgba(52, 211, 153, ${totalAlpha})`;
+              ctx.beginPath();
+              ctx.arc(x, y, 2.5 + totalAlpha * 3, 0, Math.PI * 2);
+              ctx.fill();
+
+              if ((i + j) % 3 === 0 && totalAlpha > 0.5) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(Math.PI / 4);
+                ctx.strokeStyle = `rgba(45, 212, 191, ${totalAlpha * 0.85})`;
+                ctx.lineWidth = 1.2;
+                ctx.strokeRect(-8, -8, 16, 16);
+                ctx.restore();
+              }
+            }
+          }
+        }
+        time++;
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>
