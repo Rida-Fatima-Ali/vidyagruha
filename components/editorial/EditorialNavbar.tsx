@@ -15,14 +15,14 @@ export default function EditorialNavbar() {
       <div className="max-w-[1400px] mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
         {/* Left: Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative h-11 sm:h-12 w-48 sm:w-60 flex items-center">
+          <div className="relative h-10 sm:h-12 w-44 sm:w-56 flex items-center">
             <Image
-              src="/vidyagruha-logo.jpg"
+              src="/vidyagruha-logo.png"
               alt="VidyaGruha"
               width={260}
               height={64}
               priority
-              className="object-contain object-left h-10 sm:h-11 w-auto mix-blend-multiply transition-opacity duration-200 group-hover:opacity-85"
+              className="object-contain object-left h-9 sm:h-11 w-auto transition-opacity duration-200 group-hover:opacity-85"
             />
           </div>
         </Link>

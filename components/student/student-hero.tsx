@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { CountUp } from "@/components/ui/count-up";
 import { DEMO_NOW } from "@/constants/demo";
 import type { ScheduleChangeKind } from "@/types/schedule";
 import type {
@@ -201,7 +202,13 @@ export function StudentHero({
                 loading && "animate-pulse text-surface-4",
               )}
             >
-              {loading ? "—" : `${percent.toFixed(1)}%`}
+              {loading ? (
+                "—"
+              ) : (
+                <>
+                  <CountUp to={percent} decimals={1} duration={1.2} />%
+                </>
+              )}
             </dd>
             <dd
               className={cn(
@@ -229,11 +236,11 @@ export function StudentHero({
                 loading && "animate-pulse text-surface-4",
               )}
             >
-              {loading
-                ? "—"
-                : attention > 0
-                  ? String(Math.min(attention, 99)).padStart(2, "0")
-                  : "00"}
+              {loading ? (
+                "—"
+              ) : (
+                <CountUp to={attention} duration={1.0} />
+              )}
             </dd>
             <dd className="mt-2 text-sm font-medium text-muted-foreground">
               {attention > 0

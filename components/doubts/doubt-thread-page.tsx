@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/common/page-header";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CountUp } from "@/components/ui/count-up";
 import { cn } from "@/utils/cn";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -119,14 +120,15 @@ function AnswerCard({
             <button
               onClick={() => onHelpful(answer.id)}
               className={cn(
-                "flex items-center gap-1.5 text-xs font-medium rounded-md px-2.5 py-1.5 transition-colors",
+                "flex items-center gap-1.5 text-xs font-medium rounded-md px-2.5 py-1.5 transition-colors tabular",
                 answer.userHelpful
                   ? "bg-primary/12 text-primary"
                   : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
               )}
             >
               <ThumbsUp className="h-3.5 w-3.5" />
-              Helpful {answer.helpful}
+              <span>Helpful</span>
+              <span className="font-semibold"><CountUp to={answer.helpful} duration={0.6} /></span>
             </button>
             {canVerify && !answer.verified && (
               <button

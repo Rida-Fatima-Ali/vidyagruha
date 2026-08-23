@@ -22,9 +22,9 @@ export default function WhyCampusSection() {
     >
       {/* Shape Grid background */}
       <ShapeGrid
-        borderColor="rgba(52,211,153,0.12)"
-        squareSize={48}
-        speed={0.35}
+        borderColor="rgba(52,211,153,0.10)"
+        squareSize={56}
+        speed={0.06}
         shape="square"
         direction="right"
       />

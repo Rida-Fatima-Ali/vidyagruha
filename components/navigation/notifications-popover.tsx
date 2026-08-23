@@ -20,6 +20,7 @@ import { useNotifications } from "@/hooks/use-notifications";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/common/empty-state";
+import { CountUp } from "@/components/ui/count-up";
 import { cn } from "@/utils/cn";
 import type { NotificationCategory } from "@/types/notification";
 
@@ -115,9 +116,9 @@ export function NotificationsPopover() {
         {unreadCount > 0 ? (
           <span
             aria-hidden="true"
-            className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-destructive-foreground"
+            className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-destructive-foreground tabular"
           >
-            {unreadCount}
+            <CountUp to={unreadCount} duration={0.8} />
           </span>
         ) : null}
       </Button>

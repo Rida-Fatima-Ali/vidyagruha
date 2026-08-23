@@ -28,10 +28,10 @@ export default function HeroSection() {
         horizonColor="#0d0a1a"
         waveColor="#4a1d96"
         crestColor="#7c3aed"
-        speed={0.4}
-        amplitude={1.8}
-        waveScale={1.1}
-        opacity={1.0}
+        speed={0.22}
+        amplitude={1.2}
+        waveScale={1.0}
+        opacity={0.85}
       />
 
       {/* Subtle dark vignette overlay */}

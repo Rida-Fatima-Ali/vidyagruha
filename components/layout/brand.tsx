@@ -15,18 +15,18 @@ export function Brand({
       ? "h-14 sm:h-16 w-56 sm:w-64"
       : compact || size === "small"
       ? "h-8 sm:h-9 w-36 sm:w-44"
-      : "h-11 sm:h-12 w-48 sm:w-56";
+      : "h-10 sm:h-11 w-44 sm:w-52";
 
   return (
     <div className={cn("flex items-center", className)}>
       <div className={cn("relative flex items-center", heightClass)}>
         <Image
-          src="/vidyagruha-logo.jpg"
+          src="/vidyagruha-logo.png"
           alt="VidyaGruha"
           width={280}
           height={70}
           priority
-          className="object-contain object-left h-full w-auto mix-blend-multiply transition-transform duration-200"
+          className="object-contain object-left h-full w-auto"
         />
       </div>
     </div>

@@ -209,11 +209,11 @@ export default function PrimaryEditorialLandingPage() {
             {/* Refined Brand Emblem */}
             <div className="relative h-14 sm:h-16 w-56 sm:w-64 mb-8 flex items-center justify-center">
               <Image
-                src="/vidyagruha-logo.jpg"
+                src="/vidyagruha-logo.png"
                 alt="VidyaGruha"
                 width={260}
                 height={64}
-                className="object-contain mix-blend-multiply"
+                className="object-contain"
               />
             </div>
 
@@ -361,13 +361,13 @@ export default function PrimaryEditorialLandingPage() {
       <footer className="w-full bg-[#FAF9F5] border-t border-[#28251D]/08 py-8 px-6 sm:px-10">
         <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="relative h-7 w-32 flex items-center">
+            <div className="relative h-8 w-36 flex items-center">
               <Image
-                src="/vidyagruha-logo.jpg"
+                src="/vidyagruha-logo.png"
                 alt="VidyaGruha"
-                width={140}
-                height={32}
-                className="object-contain object-left mix-blend-multiply"
+                width={160}
+                height={36}
+                className="object-contain object-left"
               />
             </div>
             <span className="text-[12px] text-[#A9A59D]">· All Rights Reserved 2026</span>

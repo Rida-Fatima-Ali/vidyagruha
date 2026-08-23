@@ -92,17 +92,14 @@ export default function LandingNavbar() {
               alignItems: "center",
               gap: "0.5rem",
               textDecoration: "none",
-              background: "#ffffff",
-              padding: "4px 10px",
-              borderRadius: "6px",
             }}
           >
             <Image
-              src="/vidyagruha-logo.jpg"
+              src="/vidyagruha-logo-light.png"
               alt="VidyaGruha"
-              width={100}
-              height={26}
-              style={{ objectFit: "contain", height: "24px", width: "auto" }}
+              width={140}
+              height={36}
+              style={{ objectFit: "contain", height: "30px", width: "auto" }}
               priority
             />
           </a>
