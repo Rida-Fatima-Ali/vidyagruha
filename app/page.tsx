@@ -274,7 +274,7 @@ export default function PrimaryEditorialLandingPage() {
         id="slide-3"
         className="min-h-screen w-full flex items-center justify-center py-20 px-6 sm:px-10 max-w-[1440px] mx-auto relative"
       >
-        <div className="w-full relative border border-[#28251D]/12 p-8 sm:p-12 lg:p-16 bg-[#FDFCFB] shadow-[0_4px_24px_rgba(0,0,0,0.03)] rounded-sm">
+        <div className="w-full relative border border-[#28251D]/12 p-8 sm:p-12 lg:p-16 bg-[#FDFCFB] shadow-[0_4px_24px_rgba(0,0,0,0.03)] rounded-2xl overflow-hidden">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -328,38 +328,35 @@ export default function PrimaryEditorialLandingPage() {
               </div>
             </motion.div>
 
-            {/* Right Overlapping Visual Composition (7 cols) */}
+            {/* Right Visual Composition (7 cols) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-7 relative flex items-center justify-center lg:justify-end"
+              className="lg:col-span-7 relative flex items-center justify-center w-full"
             >
-              {/* Outer decorative box frame matching reference 3 */}
-              <div className="hidden md:block absolute -top-8 -left-8 w-[94%] h-[108%] border border-[#28251D]/15 pointer-events-none z-0" />
-
-              {/* Main Photo Card - Generous, expansive, natural proportion */}
-              <div className="relative z-10 w-full max-w-[620px] h-[340px] sm:h-[420px] lg:h-[460px] overflow-hidden rounded-sm border border-[#28251D]/10 shadow-md bg-[#E9E7DF]">
+              {/* Main Photo Card - Completely contained with clean aspect ratio */}
+              <div className="relative w-full max-w-[540px] aspect-[16/10] sm:aspect-[14/10] overflow-hidden rounded-xl border border-[#28251D]/12 shadow-lg bg-[#E9E7DF]">
                 <Image
                   src="/slide3-campus.jpg"
                   alt="VidyaGruha Architecture"
                   fill
                   className="object-cover object-center filter grayscale-[10%] contrast-[103%]"
-                  sizes="(max-width: 1024px) 100vw, 620px"
+                  sizes="(max-width: 1024px) 100vw, 540px"
                   priority
                 />
-              </div>
-
-              {/* Small overlapping detail card */}
-              <div className="hidden sm:block absolute -bottom-6 -left-4 z-20 bg-[#FAF9F5] p-4 border border-[#28251D]/10 shadow-lg rounded-sm max-w-[220px]">
-                <div className="flex items-center gap-2 text-[#8B1E1E] text-[11px] font-semibold tracking-wider uppercase mb-1">
-                  <Radar className="w-3.5 h-3.5" />
-                  <span>Room Radar</span>
+                
+                {/* Embedded detail overlay safely inside the image */}
+                <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20 bg-[#FAF9F5]/95 backdrop-blur-md px-3.5 py-2.5 border border-[#28251D]/10 shadow-md rounded-lg max-w-[200px] sm:max-w-[220px]">
+                  <div className="flex items-center gap-1.5 text-[#8B1E1E] text-[10px] font-semibold tracking-wider uppercase mb-0.5">
+                    <Radar className="w-3 h-3" />
+                    <span>Room Radar</span>
+                  </div>
+                  <p className="text-[10.5px] text-[#77736B] leading-tight">
+                    Zero clash scheduling across campus.
+                  </p>
                 </div>
-                <p className="text-[11px] text-[#77736B] leading-tight">
-                  Zero clash scheduling across labs & lecture halls.
-                </p>
               </div>
             </motion.div>
           </div>
