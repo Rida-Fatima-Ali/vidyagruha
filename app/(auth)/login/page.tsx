@@ -102,7 +102,7 @@ export default function LoginPage() {
       <section className="relative hidden w-1/2 flex-col justify-between border-r border-border p-12 xl:p-16 lg:flex">
         <motion.div initial={reduceMotion ? false : "hidden"} animate="show" variants={containerVariants}>
           <motion.div variants={itemVariants}>
-            <Brand />
+            <Brand size="large" />
           </motion.div>
 
           <motion.div variants={itemVariants} className="mt-16 xl:mt-20">
@@ -155,7 +155,7 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           <motion.div variants={itemVariants} className="mb-8 flex flex-col items-center gap-2 text-center lg:hidden">
-            <Brand />
+            <Brand size="large" />
             <p className="text-sm text-muted-foreground">{APP_TAGLINE}</p>
           </motion.div>
 

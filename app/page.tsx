@@ -207,12 +207,12 @@ export default function PrimaryEditorialLandingPage() {
             className="lg:col-span-6 flex flex-col items-center text-center px-4"
           >
             {/* Refined Brand Emblem */}
-            <div className="relative h-10 w-44 mb-8 flex items-center justify-center">
+            <div className="relative h-14 sm:h-16 w-56 sm:w-64 mb-8 flex items-center justify-center">
               <Image
                 src="/vidyagruha-logo.jpg"
                 alt="VidyaGruha"
-                width={170}
-                height={40}
+                width={260}
+                height={64}
                 className="object-contain mix-blend-multiply"
               />
             </div>
