@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion }    from "framer-motion";
+import { motion } from "framer-motion";
 import GradientWaves from "./GradientWaves";
 import SpecularButton from "./SpecularButton";
 
@@ -12,13 +12,13 @@ export default function HeroSection() {
     <section
       id="section-hero"
       style={{
-        position:  "relative",
-        width:     "100vw",
-        height:    "100vh",
-        maxWidth:  "100vw",
-        overflow:  "hidden",
-        display:   "flex",
-        alignItems:"center",
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        maxWidth: "100vw",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
         justifyContent: "center",
         background: "#0d0a1a",
       }}
@@ -38,8 +38,9 @@ export default function HeroSection() {
       <div
         style={{
           position: "absolute",
-          inset:    0,
-          background: "radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, rgba(13,10,26,0.55) 100%)",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, rgba(13,10,26,0.55) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -47,12 +48,12 @@ export default function HeroSection() {
       {/* Content */}
       <div
         style={{
-          position:  "relative",
-          zIndex:    1,
+          position: "relative",
+          zIndex: 1,
           textAlign: "center",
-          padding:   "0 1.5rem",
-          maxWidth:  "800px",
-          width:     "100%",
+          padding: "0 1.5rem",
+          maxWidth: "800px",
+          width: "100%",
         }}
       >
         {/* Badge */}
@@ -64,22 +65,30 @@ export default function HeroSection() {
         >
           <span
             style={{
-              display:       "inline-flex",
-              alignItems:    "center",
-              gap:           "0.375rem",
-              padding:       "0.375rem 0.875rem",
-              borderRadius:  "9999px",
-              border:        "1px solid rgba(124,58,237,0.40)",
-              background:    "rgba(124,58,237,0.12)",
-              fontSize:      "0.8125rem",
-              fontWeight:    500,
-              color:         "rgba(196,168,255,0.90)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              padding: "0.375rem 0.875rem",
+              borderRadius: "9999px",
+              border: "1px solid rgba(124,58,237,0.40)",
+              background: "rgba(124,58,237,0.12)",
+              fontSize: "0.8125rem",
+              fontWeight: 500,
+              color: "rgba(196,168,255,0.90)",
               letterSpacing: "0.04em",
               textTransform: "uppercase",
             }}
           >
-            <span style={{ width:6, height:6, borderRadius:"50%", background:"#7c3aed", display:"inline-block" }} />
-            Academic Management Platform
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "#7c3aed",
+                display: "inline-block",
+              }}
+            />
+            Academic Intelligence Ecosystem
           </span>
         </motion.div>
 
@@ -89,53 +98,54 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontSize:      "clamp(2.5rem, 7vw, 5rem)",
-            fontWeight:    800,
-            color:         "#ffffff",
-            lineHeight:    1.05,
+            fontSize: "clamp(2.5rem, 7vw, 5rem)",
+            fontWeight: 800,
+            color: "#ffffff",
+            lineHeight: 1.05,
             letterSpacing: "-0.03em",
-            marginBottom:  "1.25rem",
+            marginBottom: "1.25rem",
           }}
         >
-          Welcome to{" "}
+          Explore{" "}
           <span
             style={{
-              background:    "linear-gradient(135deg, #a78bfa 0%, #7c3aed 50%, #c4b5fd 100%)",
+              background:
+                "linear-gradient(135deg, #a78bfa 0%, #7c3aed 50%, #c4b5fd 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
             }}
           >
-            Campus One
+            VidyaGruha
           </span>
         </motion.h1>
 
-        {/* Placeholder lines */}
+        {/* Description lines */}
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontSize:     "clamp(1rem, 2.5vw, 1.25rem)",
-            color:        "rgba(255,255,255,0.55)",
-            lineHeight:   1.65,
+            fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
+            color: "rgba(255,255,255,0.55)",
+            lineHeight: 1.65,
             marginBottom: "0.5rem",
           }}
         >
-          One unified platform for students, faculty, and administrators.
+          One unified space for students, faculty, and campus administrators.
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontSize:     "clamp(0.9rem, 2vw, 1.1rem)",
-            color:        "rgba(255,255,255,0.38)",
-            lineHeight:   1.65,
+            fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
+            color: "rgba(255,255,255,0.38)",
+            lineHeight: 1.65,
             marginBottom: "2.5rem",
           }}
         >
-          Attendance, assignments, schedules and more — all in one place.
+          Attendance, cover marketplace, room clash radar and doubt resolution.
         </motion.p>
 
         {/* CTA */}
@@ -143,10 +153,11 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.55, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}
         >
           <SpecularButton
             size="lg"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push("/signin")}
             radius={22}
             tintOpacity={0.1}
             blur={12}
@@ -154,7 +165,7 @@ export default function HeroSection() {
             shineSize={9}
             shineFade={38}
           >
-            Explore Campus One →
+            Sign In to VidyaGruha →
           </SpecularButton>
         </motion.div>
       </div>

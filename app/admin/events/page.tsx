@@ -7,7 +7,7 @@ export default function AdminEventsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Events"
           description="Campus events, registrations and deadlines at a glance."
         />

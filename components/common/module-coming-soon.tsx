@@ -42,7 +42,7 @@ export function ModuleComingSoon({
                 <Badge variant="info">{phase}</Badge>
               </div>
               <p className="mt-1.5 max-w-prose text-sm leading-relaxed text-muted-foreground">
-                This area of CampusOne is still under development. When it
+                This area of VidyaGruha is still under development. When it
                 ships, it will replace this page without any change to how you
                 get here — your navigation and data stay the same.
               </p>

@@ -7,7 +7,7 @@ export default function AdminApprovalsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Approvals"
           description="Review enrollment, joining and change requests from the admissions office and departments."
         />

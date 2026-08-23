@@ -7,7 +7,7 @@ export default function AdminRoomsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Rooms"
           description="Capacity and weekly utilization across blocks."
         />

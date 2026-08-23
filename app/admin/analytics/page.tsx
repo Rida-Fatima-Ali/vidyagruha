@@ -7,7 +7,7 @@ export default function AdminAnalyticsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Analytics"
           description="Academic volume, schedule changes and attendance across subjects."
         />

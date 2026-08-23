@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title={`${greeting}, ${firstName}`}
           description={
             data

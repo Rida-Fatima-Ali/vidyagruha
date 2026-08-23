@@ -77,7 +77,7 @@ function Section({
 }
 
 /* ------------------------------------------------------------------ */
-/* Sample data — representative of real CampusOne content              */
+/* Sample data — representative of real VidyaGruha content              */
 /* ------------------------------------------------------------------ */
 
 const NAV_LINKS = [
@@ -188,7 +188,7 @@ export default function DesignPreviewPage() {
               C
             </span>
             <span className="font-display text-lg tracking-tight">
-              CampusOne
+              VidyaGruha
             </span>
           </a>
 
@@ -225,7 +225,7 @@ export default function DesignPreviewPage() {
         {/* Hero — Level 0 content directly on the page */}
         <div className="pb-16 pt-20 sm:pt-24">
           <p className="kicker text-muted-foreground">
-            Design preview · CampusOne visual language
+            Design preview · VidyaGruha visual language
           </p>
           <h1 className="display-hero mt-5 max-w-3xl text-5xl sm:text-6xl lg:text-[4.25rem]">
             Quiet paper, warm ink,{" "}

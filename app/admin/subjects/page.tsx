@@ -7,7 +7,7 @@ export default function AdminSubjectsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Subjects"
           description="Course master list with faculty ownership, rooms and attendance standing."
         />

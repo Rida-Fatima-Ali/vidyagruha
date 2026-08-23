@@ -7,7 +7,7 @@ export default function AdminDepartmentsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Departments"
           description="Department structure, staffing and today's attendance across the institution."
         />

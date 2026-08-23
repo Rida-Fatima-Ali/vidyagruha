@@ -7,7 +7,7 @@ export default function AdminRiskPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Attendance risk"
           description="Students and subjects trending below the attendance threshold, with missing coursework counted."
         />

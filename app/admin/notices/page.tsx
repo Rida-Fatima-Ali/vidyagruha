@@ -7,7 +7,7 @@ export default function AdminNoticesPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Notices"
           description="Publish, schedule and archive notices for the whole campus or targeted audiences."
         />

@@ -2,20 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import FoldText     from "./FoldText";
-import PillNav      from "./PillNav";
+import Image from "next/image";
+import PillNav from "./PillNav";
 import SpecularButton from "./SpecularButton";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowLeft } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Home",     targetId: "section-hero"  },
-  { label: "About",    targetId: "section-about" },
-  { label: "Features", targetId: "section-why"   },
+  { label: "Home", targetId: "section-hero" },
+  { label: "About", targetId: "section-about" },
+  { label: "Features", targetId: "section-why" },
 ];
 
 export default function LandingNavbar() {
-  const router       = useRouter();
-  const [open, setOpen]       = useState(false);
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function LandingNavbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const goToApp = () => router.push("/login");
+  const goToSignIn = () => router.push("/signin");
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -35,131 +35,169 @@ export default function LandingNavbar() {
     <nav
       aria-label="Main navigation"
       style={{
-        position:      "fixed",
-        top:           0,
-        left:          0,
-        right:         0,
-        zIndex:        50,
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        background:    scrolled
-          ? "rgba(8, 5, 20, 0.72)"
-          : "rgba(8, 5, 20, 0.40)",
-        borderBottom:  "1px solid rgba(255,255,255,0.06)",
-        boxShadow:     scrolled
+        background: scrolled ? "rgba(8, 5, 20, 0.85)" : "rgba(8, 5, 20, 0.50)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        boxShadow: scrolled
           ? "0 8px 40px rgba(0,0,0,0.40)"
           : "0 2px 20px rgba(0,0,0,0.20)",
-        transition:    "background 0.35s ease, box-shadow 0.35s ease",
+        transition: "background 0.35s ease, box-shadow 0.35s ease",
       }}
     >
       {/* ── Desktop bar ─────────────────────────────────────────────────── */}
       <div
         style={{
-          maxWidth:      "100vw",
-          padding:       "0 1.5rem",
-          height:        "64px",
-          display:       "flex",
-          alignItems:    "center",
-          justifyContent:"space-between",
-          gap:           "1.5rem",
+          maxWidth: "100vw",
+          padding: "0 1.5rem",
+          height: "64px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        {/* Left — Brand */}
-        <div style={{ flexShrink: 0, cursor: "pointer" }} onClick={() => scrollTo("section-hero")}>
-          <FoldText
-            text="Campus One"
-            fontSize={20}
-            fontWeight={700}
-            color="#ffffff"
-            hinge="top"
-            duration={0.7}
-            stagger={0.035}
-            style={{ letterSpacing: "-0.02em" }}
-          />
+        {/* Left: Brand Logo & Back */}
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <button
+            onClick={() => router.push("/")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              color: "#fff",
+              borderRadius: "6px",
+              padding: "0.35rem 0.75rem",
+              fontSize: "0.75rem",
+              cursor: "pointer",
+              fontWeight: 500,
+              transition: "all 0.2s ease",
+            }}
+            title="Return to Main Sign In"
+          >
+            <ArrowLeft style={{ width: "14px", height: "14px" }} />
+            <span>Sign In</span>
+          </button>
+
+          <a
+            href="#section-hero"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              textDecoration: "none",
+              background: "#ffffff",
+              padding: "4px 10px",
+              borderRadius: "6px",
+            }}
+          >
+            <Image
+              src="/vidyagruha-logo.jpg"
+              alt="VidyaGruha"
+              width={100}
+              height={26}
+              style={{ objectFit: "contain", height: "24px", width: "auto" }}
+              priority
+            />
+          </a>
         </div>
 
-        {/* Center — PillNav (desktop only) */}
+        {/* Center: Pill Navigation */}
         <div
-          style={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
-          className="hidden md:flex"
+          style={{
+            display: "none",
+          }}
+          className="desktop-pill-nav"
         >
-          <PillNav items={NAV_ITEMS} />
+          <style>{`
+            @media (min-width: 768px) {
+              .desktop-pill-nav { display: block !important; }
+              .mobile-burger-btn { display: none !important; }
+            }
+          `}</style>
+          <PillNav items={NAV_ITEMS} onItemClick={scrollTo} />
         </div>
 
-        {/* Right — CTA + hamburger */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
-          <div className="hidden md:block">
+        {/* Right: Primary Sign In Button */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div style={{ display: "none" }} className="desktop-pill-nav">
             <SpecularButton
               size="sm"
-              onClick={goToApp}
-              radius={20}
-              tintOpacity={0.08}
-              blur={8}
+              onClick={goToSignIn}
+              radius={8}
+              tintOpacity={0.12}
+              blur={12}
               intensity={1.2}
-              shineSize={8}
-              shineFade={35}
             >
-              View Campus One
+              Sign In
             </SpecularButton>
           </div>
 
-          {/* Hamburger (mobile) */}
+          {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 rounded-lg"
+            type="button"
+            className="mobile-burger-btn"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
             style={{
-              color:      "#ffffffcc",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "36px",
+              height: "36px",
+              borderRadius: "8px",
               background: "rgba(255,255,255,0.06)",
-              border:     "1px solid rgba(255,255,255,0.10)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              color: "#fff",
+              cursor: "pointer",
             }}
-            onClick={() => setOpen(v => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
           >
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </div>
 
-      {/* ── Mobile menu ─────────────────────────────────────────────────── */}
+      {/* ── Mobile dropdown ──────────────────────────────────────────────── */}
       {open && (
         <div
-          className="md:hidden"
           style={{
-            borderTop:  "1px solid rgba(255,255,255,0.06)",
-            padding:    "1rem 1.5rem 1.25rem",
-            display:    "flex",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+            background: "rgba(8, 5, 20, 0.95)",
+            backdropFilter: "blur(20px)",
+            padding: "1rem 1.5rem 1.5rem",
+            display: "flex",
             flexDirection: "column",
-            gap:        "0.5rem",
+            gap: "0.75rem",
           }}
         >
-          {NAV_ITEMS.map(it => (
+          {NAV_ITEMS.map((item) => (
             <button
-              key={it.targetId}
-              onClick={() => scrollTo(it.targetId)}
+              key={item.label}
+              type="button"
+              onClick={() => scrollTo(item.targetId)}
               style={{
-                textAlign:  "left",
-                padding:    "0.625rem 0.75rem",
-                borderRadius:"8px",
-                color:      "rgba(255,255,255,0.80)",
-                fontSize:   "0.9375rem",
+                textAlign: "left",
+                background: "transparent",
+                border: "none",
+                color: "rgba(255,255,255,0.80)",
+                fontSize: "1rem",
+                padding: "0.5rem 0",
+                cursor: "pointer",
                 fontWeight: 500,
-                background: "rgba(255,255,255,0.05)",
-                border:     "1px solid rgba(255,255,255,0.08)",
-                cursor:     "pointer",
-                transition: "background 0.2s",
               }}
             >
-              {it.label}
+              {item.label}
             </button>
           ))}
-          <div style={{ marginTop: "0.5rem" }}>
-            <SpecularButton
-              size="md"
-              onClick={goToApp}
-              radius={12}
-              tintOpacity={0.1}
-              className="w-full"
-            >
-              View Campus One
+          <div style={{ paddingTop: "0.5rem" }}>
+            <SpecularButton size="md" onClick={goToSignIn} radius={8}>
+              Sign In to VidyaGruha
             </SpecularButton>
           </div>
         </div>

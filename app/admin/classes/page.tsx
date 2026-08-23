@@ -7,7 +7,7 @@ export default function AdminClassesPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Classes"
           description="Division roll strength, advisors and attendance standing."
         />

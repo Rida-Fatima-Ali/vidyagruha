@@ -7,7 +7,7 @@ export default function AdminStudentsPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Students"
           description="Attendance and coursework standing for every student, live from the shared records."
         />

@@ -7,7 +7,7 @@ export default function AdminUsersPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Users"
           description="Every account across the institution — students, faculty and administrators."
         />

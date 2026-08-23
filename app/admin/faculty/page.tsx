@@ -7,7 +7,7 @@ export default function AdminFacultyPage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Faculty"
           description="Instructors and their subject ownership, derived from the canonical course mapping."
         />

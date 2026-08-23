@@ -54,7 +54,7 @@ export interface StudentHeroProps {
 }
 
 /**
- * The opening statement of CampusOne — editorial, not dashboard.
+ * The opening statement of VidyaGruha — editorial, not dashboard.
  *
  * Content sits directly on the page (no container), organized by
  * typography and hairlines: a serif greeting, the day's date, the next

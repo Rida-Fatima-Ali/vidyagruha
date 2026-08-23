@@ -9,7 +9,7 @@ export default function AdminSchedulePage() {
     <PageTransition>
       <div className="space-y-6">
         <PageHeader
-          eyebrow="CampusOne · Administration"
+          eyebrow="VidyaGruha · Administration"
           title="Schedule"
           description="The effective institution timetable — base periods plus every schedule change, with live conflict detection."
           actions={<Badge variant="secondary">Demo day · {DEMO_TODAY}</Badge>}
