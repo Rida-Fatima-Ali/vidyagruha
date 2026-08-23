@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
   type ReactNode,
@@ -14,12 +15,19 @@ import { cn } from "@/utils/cn";
 
 export type ToastTone = "default" | "success" | "destructive" | "warning" | "info";
 
+export interface ToastAction {
+  label: string;
+  onClick: () => void;
+}
+
 export interface ToastOptions {
   title: string;
   description?: string;
   tone?: ToastTone;
   /** Auto-dismiss delay in ms (default 4000). */
   duration?: number;
+  /** Inline action button — shown with a countdown while the toast is alive. */
+  action?: ToastAction;
 }
 
 interface ToastItem {
@@ -27,6 +35,9 @@ interface ToastItem {
   title: string;
   description?: string;
   tone: ToastTone;
+  action?: ToastAction;
+  duration: number;
+  createdAt: number;
 }
 
 const TONE_ICON = {
@@ -62,11 +73,20 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const toast = useCallback(
     (options: ToastOptions) => {
       const id = `toast-${++counter.current}`;
+      const duration = options.duration ?? 4000;
       setItems((current) => [
         ...current,
-        { id, title: options.title, description: options.description, tone: options.tone ?? "default" },
+        {
+          id,
+          title: options.title,
+          description: options.description,
+          tone: options.tone ?? "default",
+          action: options.action,
+          duration,
+          createdAt: Date.now(),
+        },
       ]);
-      window.setTimeout(() => dismiss(id), options.duration ?? 4000);
+      window.setTimeout(() => dismiss(id), duration);
     },
     [dismiss],
   );
@@ -105,6 +125,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                       {item.description}
                     </span>
                   ) : null}
+                  {item.action ? (
+                    <ToastActionButton
+                      action={item.action}
+                      duration={item.duration}
+                      createdAt={item.createdAt}
+                      onDone={() => dismiss(item.id)}
+                    />
+                  ) : null}
                 </span>
                 <button
                   type="button"
@@ -120,6 +148,53 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         </AnimatePresence>
       </div>
     </ToastContext.Provider>
+  );
+}
+
+/** Action button with a Gmail-style countdown of the remaining window. */
+function ToastActionButton({
+  action,
+  duration,
+  createdAt,
+  onDone,
+}: {
+  action: ToastAction;
+  duration: number;
+  createdAt: number;
+  onDone: () => void;
+}) {
+  const [left, setLeft] = useState(duration);
+
+  useEffect(() => {
+    const tick = () => setLeft(Math.max(0, createdAt + duration - Date.now()));
+    tick();
+    const timer = window.setInterval(tick, 200);
+    return () => window.clearInterval(timer);
+  }, [createdAt, duration]);
+
+  const remaining = Math.ceil(left / 1000);
+  const progress = Math.max(0, Math.min(1, left / duration));
+
+  return (
+    <span className="mt-2 flex items-center gap-2.5">
+      <button
+        type="button"
+        onClick={() => {
+          action.onClick();
+          onDone();
+        }}
+        className="rounded-md bg-surface-2 px-2.5 py-1 text-xs font-semibold text-foreground ring-1 ring-inset ring-border transition-colors hover:bg-surface-3"
+      >
+        {action.label}
+      </button>
+      <span className="tabular text-xs text-muted-foreground">{remaining}s</span>
+      <span className="h-1 min-w-0 flex-1 overflow-hidden rounded-full bg-surface-3" aria-hidden="true">
+        <span
+          className="block h-full rounded-full bg-primary transition-[width] duration-200 ease-linear"
+          style={{ width: `${progress * 100}%` }}
+        />
+      </span>
+    </span>
   );
 }
 

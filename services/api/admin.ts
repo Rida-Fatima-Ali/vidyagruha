@@ -27,10 +27,13 @@ import {
   adminScheduleView,
   attendanceRisk,
   institutionalActivity,
+  roomRadar,
 } from "@/services/admin";
 import { subjectName } from "@/services/schedule";
+import { orgTree } from "@/services/audience";
 import { pushActivityNotification } from "@/mocks/notifications";
 import { formatDayLabel } from "@/utils/date";
+import { DEMO_WEEK_START } from "@/constants/demo";
 import type {
   AdminAnalyticsData,
   AdminClass,
@@ -51,8 +54,10 @@ import type {
   AttendanceRiskView,
   InstitutionalActivity,
   PendingApproval,
+  RoomRadarView,
 } from "@/types/admin";
 import type { CreateScheduleOverrideInput } from "@/types/faculty";
+import type { OrgNode } from "@/types/org";
 import type { ScheduleChangeKind, ScheduleOverride } from "@/types/schedule";
 
 /**
@@ -96,6 +101,14 @@ registerMock("/api/admin/classes", () => getAdminClasses());
 registerMock("/api/admin/subjects", () => getAdminSubjects());
 
 registerMock("/api/admin/rooms", () => getAdminRooms());
+
+registerMock("/api/admin/rooms/radar", (request) => {
+  const weekStart = request.query.weekStart ?? DEMO_WEEK_START;
+  const days = Number(request.query.days ?? 6);
+  return roomRadar(weekStart, days);
+});
+
+registerMock("/api/admin/org-tree", () => orgTree());
 
 registerMock("/api/admin/schedule", (request) => {
   const start = request.query.start ?? "2026-08-10";
@@ -250,6 +263,13 @@ export const adminService = {
   getSubjects: () => apiClient.get<AdminSubject[]>("/api/admin/subjects"),
 
   getRooms: () => apiClient.get<AdminRoom[]>("/api/admin/rooms"),
+
+  getRoomRadar: (weekStart: string, days = 6) =>
+    apiClient.get<RoomRadarView>(
+      `/api/admin/rooms/radar?weekStart=${weekStart}&days=${days}`,
+    ),
+
+  getOrgTree: () => apiClient.get<OrgNode>("/api/admin/org-tree"),
 
   getSchedule: (start: string, days: number) =>
     apiClient.get<AdminScheduleView>(`/api/admin/schedule?start=${start}&days=${days}`),

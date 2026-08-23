@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   CheckCircle2,
   CheckCheck,
@@ -16,6 +16,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/hooks/use-auth";
 import { useSaveAttendance } from "@/hooks/use-faculty";
 import { formatShortDate } from "@/utils/date";
@@ -55,6 +56,9 @@ const STATUS_META: Record<MarkStatus, { label: string; active: string }> = {
 
 const ORDER: MarkStatus[] = ["present", "late", "absent"];
 
+/** Window in which a save can be taken back before the correction flow kicks in. */
+const UNDO_WINDOW_MS = 6000;
+
 export function AttendanceWorkbench({
   session,
   saved,
@@ -66,7 +70,9 @@ export function AttendanceWorkbench({
 }: AttendanceWorkbenchProps) {
   const { user } = useAuth();
   const saveManager = useSaveAttendance(user);
+  const { toast } = useToast();
   const [query, setQuery] = useState("");
+  const undoing = useRef(false);
 
   const [records, setRecords] = useState<Record<string, MarkStatus>>(() => {
     const initial: Record<string, MarkStatus> = {};
@@ -114,21 +120,70 @@ export function AttendanceWorkbench({
     setJustSaved(false);
   }
 
-  async function handleSave(): Promise<void> {
+  /** Snapshot to restore when the faculty hits Undo inside the window. */
+  function previousSnapshot(): Record<string, MarkStatus> | null {
+    if (!saved) return null;
+    const snapshot: Record<string, MarkStatus> = {};
+    for (const row of rows) snapshot[row.student.id] = "present";
+    for (const record of saved.records) snapshot[record.studentId] = record.status;
+    return snapshot;
+  }
+
+  async function persist(next: Record<string, MarkStatus>): Promise<boolean> {
     const payload = rows.map((row) => ({
       studentId: row.student.id,
-      status: records[row.student.id] ?? "present",
+      status: next[row.student.id] ?? "present",
     }));
-    const ok = await saveManager.save(
-      session.date,
-      session.code,
-      session.groupSlug,
-      payload,
-    );
+    return saveManager.save(session.date, session.code, session.groupSlug, payload);
+  }
+
+  async function handleUndo(snapshot: Record<string, MarkStatus> | null): Promise<void> {
+    undoing.current = true;
+    const payload = snapshot
+      ? rows.map((row) => ({
+          studentId: row.student.id,
+          status: snapshot[row.student.id] ?? ("present" as MarkStatus),
+        }))
+      : undefined;
+    const ok = await saveManager.undo(session.date, session.code, session.groupSlug, payload);
+    if (ok) {
+      if (snapshot) {
+        setRecords(snapshot);
+        setDirty(false);
+        toast({ title: "Reverted to the previous marking", tone: "default" });
+      } else {
+        setJustSaved(false);
+        setDirty(true);
+        toast({
+          title: "Attendance unmarked",
+          description: "Nothing was recorded for this session — mark it again when you're ready.",
+          tone: "default",
+        });
+      }
+      onSaved();
+    }
+    undoing.current = false;
+  }
+
+  async function handleSave(): Promise<void> {
+    const snapshot = previousSnapshot();
+    const ok = await persist(records);
     if (ok) {
       setDirty(false);
       setJustSaved(true);
       onSaved();
+      toast({
+        title: "Attendance saved",
+        description: `${summary.present} present · ${summary.late} late · ${summary.absent} absent`,
+        tone: "success",
+        duration: UNDO_WINDOW_MS,
+        action: {
+          label: "Undo",
+          onClick: () => {
+            if (!undoing.current) void handleUndo(snapshot);
+          },
+        },
+      });
     }
   }
 

@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlobalSearch } from "@/components/navigation/global-search";
 import { NotificationsPopover } from "@/components/navigation/notifications-popover";
+import { LiteModeToggle } from "@/components/navigation/lite-mode-toggle";
 import { ThemeToggle } from "@/components/navigation/theme-toggle";
 import { UserMenu } from "@/components/navigation/user-menu";
 
@@ -26,6 +27,7 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
+          <LiteModeToggle />
           <ThemeToggle />
           <NotificationsPopover />
           <UserMenu />

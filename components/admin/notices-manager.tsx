@@ -20,6 +20,7 @@ import { Panel } from "@/components/common/panel";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
 import { ListSkeleton } from "@/components/common/list-skeleton";
+import { AudienceTree } from "@/components/admin/audience-tree";
 import { useAdminNotices, useAdminNoticeManager } from "@/hooks/use-admin";
 import { formatDayLabel } from "@/utils/date";
 import { cn } from "@/utils/cn";
@@ -192,6 +193,7 @@ function AdminNoticeDialog({
   const [body, setBody] = useState(notice?.body ?? "");
   const [category, setCategory] = useState<NoticeCategory>(notice?.category ?? "general");
   const [audience, setAudience] = useState<AdminNoticeAudience>(notice?.audience ?? "institution");
+  const [scopeNodeId, setScopeNodeId] = useState(notice?.scopeNodeId ?? "institution");
   const [priority, setPriority] = useState<AdminNotice["priority"]>(notice?.priority ?? "normal");
   const [pinned, setPinned] = useState(notice?.pinned ?? false);
   const [status, setStatus] = useState<AdminNoticeStatus>(notice?.status ?? "draft");
@@ -225,6 +227,7 @@ function AdminNoticeDialog({
       body: body.trim() || undefined,
       category,
       audience,
+      scopeNodeId,
       priority,
       pinned,
       status,
@@ -286,7 +289,18 @@ function AdminNoticeDialog({
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="notice-audience">Audience</Label>
-              <Select id="notice-audience" value={audience} onChange={(event) => setAudience(event.target.value as AdminNoticeAudience)}>
+              <Select
+                id="notice-audience"
+                value={audience}
+                onChange={(event) => {
+                  const next = event.target.value as AdminNoticeAudience;
+                  setAudience(next);
+                  if (next !== "department" && next !== "class") setScopeNodeId("institution");
+                  else if (scopeNodeId === "institution") {
+                    setScopeNodeId(next === "department" ? "cmpn" : "cmpn-se-cmpn-a");
+                  }
+                }}
+              >
                 {(Object.keys(AUDIENCE_LABEL) as AdminNoticeAudience[]).map((key) => (
                   <option key={key} value={key}>
                     {AUDIENCE_LABEL[key]}
@@ -294,6 +308,10 @@ function AdminNoticeDialog({
                 ))}
               </Select>
             </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Reach preview</Label>
+            <AudienceTree audience={audience} nodeId={scopeNodeId} onNodeChange={setScopeNodeId} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">

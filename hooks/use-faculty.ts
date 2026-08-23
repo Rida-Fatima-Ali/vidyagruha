@@ -209,6 +209,13 @@ export interface SaveAttendanceResult {
     groupSlug: string,
     records: { studentId: string; status: "present" | "absent" | "late" }[],
   ) => Promise<boolean>;
+  /** Undo a save — restores `records` when given, otherwise unmarks the session. */
+  undo: (
+    date: string,
+    code: string,
+    groupSlug: string,
+    records?: { studentId: string; status: "present" | "absent" | "late" }[],
+  ) => Promise<boolean>;
 }
 
 /** Mutation that persists a marking run into the shared attendance store. */
@@ -244,7 +251,35 @@ export function useSaveAttendance(user: AuthUser | null): SaveAttendanceResult {
     [user],
   );
 
-  return { busy, error, save };
+  const undo = useCallback(
+    async (
+      date: string,
+      code: string,
+      groupSlug: string,
+      records?: { studentId: string; status: "present" | "absent" | "late" }[],
+    ): Promise<boolean> => {
+      if (!user) return false;
+      setBusy(true);
+      setError(null);
+      try {
+        await facultyService.undoAttendance(user, {
+          date,
+          code,
+          groupSlug,
+          records: records ?? [],
+        });
+        return true;
+      } catch {
+        setError("Unable to undo this save. Please try again.");
+        return false;
+      } finally {
+        setBusy(false);
+      }
+    },
+    [user],
+  );
+
+  return { busy, error, save, undo };
 }
 
 export interface AttendanceAnalyticsResult {

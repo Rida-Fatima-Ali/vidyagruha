@@ -393,20 +393,55 @@ export function saveSessionAttendance(
     SAVED_SESSIONS.unshift(session);
   }
 
+  if (existing) rollbackAggregates(code, existing.records);
+  applyAggregates(code, records);
+
+  return session;
+}
+
+/**
+ * Drop a marking run entirely — used by the undo window so a mistaken save
+ * leaves no session and no aggregate trace behind.
+ */
+export function clearSessionAttendance(
+  date: string,
+  code: string,
+  groupSlug: string,
+): boolean {
+  const existing = getSavedSession(date, code, groupSlug);
+  if (!existing) return false;
+  SAVED_SESSIONS.splice(
+    SAVED_SESSIONS.findIndex((session) => session.id === existing.id),
+    1,
+  );
+  rollbackAggregates(code, existing.records);
+  return true;
+}
+
+function applyAggregates(code: string, records: SessionAttendanceRecord[]): void {
   for (const record of records) {
     const row = getAggregate(record.studentId, code);
     if (!row) continue;
-    if (record.status === "absent") {
-      row.total += 1;
-    } else {
+    row.total += 1;
+    if (record.status !== "absent") {
       row.attended += 1;
-      row.total += 1;
       if (record.status === "late") row.lateCount += 1;
     }
     row.percent = percent(row.attended, row.total);
   }
+}
 
-  return session;
+function rollbackAggregates(code: string, records: SessionAttendanceRecord[]): void {
+  for (const record of records) {
+    const row = getAggregate(record.studentId, code);
+    if (!row) continue;
+    row.total = Math.max(0, row.total - 1);
+    if (record.status !== "absent") {
+      row.attended = Math.max(0, row.attended - 1);
+      if (record.status === "late") row.lateCount = Math.max(0, row.lateCount - 1);
+    }
+    row.percent = percent(row.attended, row.total);
+  }
 }
 
 /* ------------------------------------------------------------------ */

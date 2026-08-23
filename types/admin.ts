@@ -183,6 +183,52 @@ export interface AdminScheduleView {
 }
 
 /* ------------------------------------------------------------------ */
+/* Room-clash radar                                                    */
+/* ------------------------------------------------------------------ */
+
+export interface RadarSession {
+  code: string;
+  subject: string;
+  faculty: string;
+  start: string;
+  end: string;
+  type: ScheduleSlotType;
+}
+
+/** One room × one hour of a day. */
+export interface RadarCell {
+  room: string;
+  hour: string;
+  sessions: RadarSession[];
+  /** Two or more overlapping sessions already booked into this room. */
+  clash: boolean;
+}
+
+export interface RadarDay {
+  date: string;
+  label: string;
+  cells: RadarCell[];
+  bookedHours: number;
+}
+
+export interface RoomRadarView {
+  weekStart: string;
+  hours: string[];
+  rooms: AdminRoom[];
+  days: RadarDay[];
+  /** Movable sessions in the week, for the "what if I reschedule this" probe. */
+  movable: {
+    id: string;
+    date: string;
+    code: string;
+    subject: string;
+    room: string;
+    start: string;
+    end: string;
+  }[];
+}
+
+/* ------------------------------------------------------------------ */
 /* Notices + events                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -200,6 +246,8 @@ export interface AdminNotice {
   body?: string;
   category: NoticeCategory;
   audience: AdminNoticeAudience;
+  /** Node in the institutional tree the notice is addressed to. */
+  scopeNodeId?: string;
   priority: "high" | "normal" | "low";
   status: AdminNoticeStatus;
   pinned: boolean;
@@ -214,6 +262,7 @@ export interface AdminNoticeDraft {
   body?: string;
   category: NoticeCategory;
   audience: AdminNoticeAudience;
+  scopeNodeId?: string;
   priority: "high" | "normal" | "low";
   status: AdminNoticeStatus;
   pinned: boolean;

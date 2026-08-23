@@ -124,6 +124,14 @@ export function useAdminRooms() {
   );
 }
 
+export function useRoomRadar(weekStart: string, days = 6) {
+  return useAdminResource(
+    () => adminService.getRoomRadar(weekStart, days),
+    "Unable to load the room radar. Please try again.",
+    [weekStart, days],
+  );
+}
+
 export function useAdminSchedule(start: string, days: number) {
   return useAdminResource(
     () => adminService.getSchedule(start, days),

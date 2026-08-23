@@ -1,22 +1,18 @@
 import { PageTransition } from "@/components/common/page-transition";
-import { ModuleComingSoon } from "@/components/common/module-coming-soon";
-import { MessagesSquare } from "lucide-react";
+import { PageHeader } from "@/components/common/page-header";
+import { DoubtBoard } from "@/components/doubts/doubt-board";
 
 export default function StudentDoubtsPage() {
   return (
     <PageTransition>
-      <ModuleComingSoon
-        title="Doubts"
-        description="Ask questions about your subjects and get answers from faculty and classmates."
-        icon={MessagesSquare}
-        planned={[
-          "Ask subject-specific questions attached to lectures and materials",
-          "Faculty-marked answers with verified badges",
-          "Peer answers you can upvote within your class",
-          "Replies appear as notifications, so you never miss an answer",
-        ]}
-        backHref="/student/dashboard"
-      />
+      <div className="space-y-6">
+        <PageHeader
+          eyebrow="Student · Doubts"
+          title="Doubts"
+          description="Ask once, upvote what helped, and trust the answer your faculty verified. Every thread stays searchable for the batches after you."
+        />
+        <DoubtBoard role="student" />
+      </div>
     </PageTransition>
   );
 }

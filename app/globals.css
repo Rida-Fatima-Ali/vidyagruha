@@ -491,3 +491,35 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ================================================================
+   LOW-BANDWIDTH MODE — text-first rendering on poor connections
+   ================================================================ */
+html[data-lite] *,
+html[data-lite] *::before,
+html[data-lite] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background-image: none !important;
+}
+
+html[data-lite] img,
+html[data-lite] video,
+html[data-lite] iframe,
+html[data-lite] [data-lite-hide] {
+  display: none !important;
+}
+
+html[data-lite] [data-lite-placeholder]::after {
+  content: attr(data-lite-placeholder);
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}

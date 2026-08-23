@@ -13,7 +13,7 @@ import {
   getSubmissionsForAssignment,
 } from "@/mocks/assignments";
 import { getStudentMaterials } from "@/mocks/materials";
-import { getAdminApprovals, MOCK_ADMIN_DASHBOARD } from "@/mocks/admin";
+import { getAdminApprovals, getAdminRooms, MOCK_ADMIN_DASHBOARD } from "@/mocks/admin";
 import { getAllEvents, getAllNotices } from "@/mocks/notices-events";
 import { effectiveScheduleForDate, overridesForDate, subjectName } from "@/services/schedule";
 import { DEMO_WEEK_START } from "@/constants/demo";
@@ -27,7 +27,10 @@ import type {
   AttendanceRiskView,
   ConflictType,
   InstitutionalActivity,
+  RadarCell,
+  RadarDay,
   RiskStudentRow,
+  RoomRadarView,
   ScheduleAnalytics,
   ScheduleConflict,
   SubjectAttendanceStat,
@@ -193,6 +196,67 @@ export function conflictsForProposedSlot(
     }
   }
   return clashes;
+}
+
+/* ------------------------------------------------------------------ */
+/* Room-clash radar                                                    */
+/* ------------------------------------------------------------------ */
+
+/** Teaching hours the heatmap spans. */
+const RADAR_HOURS = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+
+function coversHour(slot: { start: string; end: string }, hour: string): boolean {
+  const hourEnd = `${String(Number(hour.slice(0, 2)) + 1).padStart(2, "0")}:00`;
+  return overlaps(slot.start, slot.end, hour, hourEnd);
+}
+
+/** Rooms × hours occupancy for a week, with already-booked double-bookings flagged. */
+export function roomRadar(weekStartISO: string = DEMO_WEEK_START, days = 6): RoomRadarView {
+  const rooms = getAdminRooms();
+  const dates = weekDates(weekStartISO, days);
+  const movable: RoomRadarView["movable"] = [];
+
+  const radarDays: RadarDay[] = dates.map((date) => {
+    const slots = adminScheduleForDate(date).filter(activeSlot);
+    for (const slot of slots) {
+      movable.push({
+        id: `${date}-${slot.code}`,
+        date,
+        code: slot.code,
+        subject: slot.subject,
+        room: slot.room,
+        start: slot.start,
+        end: slot.end,
+      });
+    }
+
+    const cells: RadarCell[] = [];
+    for (const room of rooms) {
+      for (const hour of RADAR_HOURS) {
+        const sessions = slots
+          .filter((slot) => slot.room === room.name && coversHour(slot, hour))
+          .map((slot) => ({
+            code: slot.code,
+            subject: slot.subject,
+            faculty: slot.faculty,
+            start: slot.start,
+            end: slot.end,
+            type: slot.type,
+          }));
+        if (sessions.length === 0) continue;
+        cells.push({ room: room.name, hour, sessions, clash: sessions.length > 1 });
+      }
+    }
+
+    return {
+      date,
+      label: formatDayLabel(date),
+      cells,
+      bookedHours: cells.length,
+    };
+  });
+
+  return { weekStart: weekStartISO, hours: RADAR_HOURS, rooms, days: radarDays, movable };
 }
 
 /* ------------------------------------------------------------------ */

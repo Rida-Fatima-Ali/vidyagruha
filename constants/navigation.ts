@@ -11,6 +11,7 @@ import {
   DoorOpen,
   FolderOpen,
   GraduationCap,
+  Handshake,
   Inbox,
   LayoutDashboard,
   MapPin,
@@ -65,7 +66,7 @@ const studentNavigation: NavGroup[] = [
       { title: "Notices", href: "/student/notices", icon: Bell },
       { title: "Events & Opportunities", href: "/student/events", icon: Sparkles },
       { title: "Campus", href: "/student/campus", icon: MapPin, comingSoon: true },
-      { title: "Doubts", href: "/student/doubts", icon: MessagesSquare, comingSoon: true },
+      { title: "Doubts", href: "/student/doubts", icon: MessagesSquare },
     ],
   },
   {
@@ -96,6 +97,7 @@ const facultyNavigation: NavGroup[] = [
       { title: "Submissions", href: "/faculty/submissions", icon: Inbox },
       { title: "Materials", href: "/faculty/materials", icon: FolderOpen },
       { title: "Students", href: "/faculty/students", icon: Users },
+      { title: "Cover requests", href: "/faculty/cover-requests", icon: Handshake },
       { title: "Quizzes", href: "/faculty/quizzes", icon: PenLine, comingSoon: true },
     ],
   },
@@ -104,7 +106,7 @@ const facultyNavigation: NavGroup[] = [
     items: [
       { title: "Notices", href: "/faculty/notices", icon: Bell, comingSoon: true },
       { title: "Events", href: "/faculty/events", icon: Sparkles, comingSoon: true },
-      { title: "Doubts", href: "/faculty/doubts", icon: MessagesSquare, comingSoon: true },
+      { title: "Doubts", href: "/faculty/doubts", icon: MessagesSquare },
     ],
   },
   {

@@ -5,6 +5,7 @@ import type { UserRole } from "@/types/auth";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { MobileNav } from "./mobile-nav";
+import { LiteModeBanner } from "./lite-mode-banner";
 
 export function AppShell({
   role,
@@ -53,6 +54,7 @@ export function AppShell({
 
       <div className="flex min-h-dvh flex-col lg:pl-64">
         <Topbar onMenuClick={() => setMobileNavOpen(true)} />
+        <LiteModeBanner />
         <main
           id="main-content"
           className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-10"

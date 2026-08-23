@@ -14,6 +14,7 @@ import {
   gradeSubmission,
 } from "@/mocks/assignments";
 import {
+  clearSessionAttendance,
   getClassSnapshot,
   getSavedSessionById,
 } from "@/mocks/attendance";
@@ -22,7 +23,10 @@ import {
   getFacultyMaterials,
 } from "@/mocks/materials";
 import { MOCK_USERS } from "@/mocks/users";
-import { pushActivityNotification } from "@/mocks/notifications";
+import {
+  pushActivityNotification,
+  removeActivityNotification,
+} from "@/mocks/notifications";
 import {
   effectiveScheduleForDate,
   facultyFor,
@@ -201,6 +205,38 @@ registerMock("/api/faculty/attendance/save", (request) => {
     session: getSavedSessionById(result.id),
     snapshot: getClassSnapshot(payload.code, payload.groupSlug),
   };
+});
+
+/** Undo window: wipe the marking run, optionally restoring the prior one. */
+registerMock("/api/faculty/attendance/undo", (request) => {
+  const user = demoFaculty();
+  const payload = (request.body ?? {}) as SaveAttendancePayload;
+  if (!payload.date || !payload.code || !payload.groupSlug) {
+    throw new ApiError("A session is required.", 400);
+  }
+  assertOwnedCode(payload.code, user.name);
+  clearSessionAttendance(payload.date, payload.code, payload.groupSlug);
+  removeActivityNotification(`att-${payload.date}-${payload.code}-${payload.groupSlug}`);
+
+  if (Array.isArray(payload.records) && payload.records.length > 0) {
+    const session = getSessionMeta(payload);
+    const result = persistSession(
+      payload.date,
+      payload.code,
+      payload.groupSlug,
+      payload.records,
+      session.start,
+      session.end,
+      session.room,
+    );
+    return {
+      ...result,
+      session: getSavedSessionById(result.id),
+      snapshot: getClassSnapshot(payload.code, payload.groupSlug),
+    };
+  }
+
+  return { cleared: true };
 });
 
 function getSessionMeta(payload: SaveAttendancePayload): {
@@ -442,6 +478,12 @@ export const facultyService = {
   saveAttendance: (user: AuthUser, payload: SaveAttendancePayload) =>
     apiClient.post<AttendanceSaveResponse>(
       `/api/faculty/attendance/save?role=${user.role}&userId=${encodeURIComponent(user.id)}`,
+      payload,
+    ),
+
+  undoAttendance: (user: AuthUser, payload: SaveAttendancePayload) =>
+    apiClient.post<AttendanceSaveResponse | { cleared: true }>(
+      `/api/faculty/attendance/undo?role=${user.role}&userId=${encodeURIComponent(user.id)}`,
       payload,
     ),
 

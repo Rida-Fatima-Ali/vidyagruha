@@ -67,6 +67,12 @@ export function pushActivityNotification(input: ActivityNotificationInput): void
   });
 }
 
+/** Retract a generated notification (used when a mutation is undone). */
+export function removeActivityNotification(dedupeKey: string): void {
+  const index = ACTIVITY.findIndex((item) => item.dedupeKey === dedupeKey);
+  if (index !== -1) ACTIVITY.splice(index, 1);
+}
+
 function activityForUser(user: AuthUser): AppNotification[] {
   return ACTIVITY.filter((item) => {
     if (item.audience === "all") return true;
