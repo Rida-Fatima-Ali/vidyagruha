@@ -1,29 +1,19 @@
-import { GraduationCap } from "lucide-react";
-import { APP_NAME } from "@/constants/app";
+import Image from "next/image";
 import { cn } from "@/utils/cn";
 
 export function Brand({ className, compact = false }: { className?: string; compact?: boolean }) {
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      <span
-        className={cn(
-          "flex shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground",
-          compact ? "h-7 w-7" : "h-8 w-8",
-        )}
-      >
-        <GraduationCap
-          className={cn("relative", compact ? "h-4 w-4" : "h-[18px] w-[18px]")}
-          aria-hidden="true"
+      <div className={cn("relative flex items-center", compact ? "h-7 w-28" : "h-8 w-36")}>
+        <Image
+          src="/vidyagruha-logo.jpg"
+          alt="VidyaGruha"
+          width={160}
+          height={36}
+          priority
+          className="object-contain object-left h-full w-auto mix-blend-multiply"
         />
-      </span>
-      <span
-        className={cn(
-          "font-heading font-semibold tracking-tight",
-          compact ? "text-base" : "text-lg",
-        )}
-      >
-        {APP_NAME}
-      </span>
+      </div>
     </div>
   );
 }

@@ -52,10 +52,16 @@ export default function EditorialNavbar() {
         {/* Right: CTA / Explore button */}
         <div className="hidden md:flex items-center gap-4">
           <Link
+            href="/login"
+            className="text-[12px] font-semibold tracking-[0.16em] uppercase text-[#1C1917] hover:text-[#8B1E1E] transition-colors"
+          >
+            Sign In
+          </Link>
+          <Link
             href="/explore"
             className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#28251D]/15 text-[11px] font-semibold tracking-[0.16em] uppercase text-[#28251D] hover:border-[#28251D] hover:bg-[#28251D] hover:text-[#FAF9F5] transition-all duration-300"
           >
-            <span>Explore Experience</span>
+            <span>Explore Tour</span>
             <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
           </Link>
         </div>
@@ -63,7 +69,7 @@ export default function EditorialNavbar() {
         {/* Mobile Hamburger */}
         <div className="flex md:hidden items-center gap-3">
           <Link
-            href="/signin"
+            href="/login"
             className="px-3.5 py-1.5 rounded-full bg-[#1E1C1A] text-[#FAF9F5] text-[11px] font-medium tracking-[0.1em] uppercase"
           >
             Sign In
@@ -83,11 +89,11 @@ export default function EditorialNavbar() {
       {mobileOpen && (
         <div className="md:hidden bg-[#FAF9F5] border-b border-[#28251D]/10 px-6 py-6 flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
           <Link
-            href="/signin"
+            href="/login"
             onClick={() => setMobileOpen(false)}
             className="text-[13px] font-semibold tracking-[0.18em] uppercase text-[#1E1C1A] py-1 border-b border-[#28251D]/06"
           >
-            Sign In (Select Role)
+            Sign In Directly
           </Link>
           <Link
             href="/explore"
