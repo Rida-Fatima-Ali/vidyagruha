@@ -121,19 +121,39 @@ export default function LandingNavbar() {
           <PillNav items={NAV_ITEMS} onItemClick={scrollTo} />
         </div>
 
-        {/* Right: Primary Sign In Button */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        {/* Right: Primary Sign In & Sign Up Buttons */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <div style={{ display: "none" }} className="desktop-pill-nav">
-            <SpecularButton
-              size="sm"
-              onClick={goToSignIn}
-              radius={8}
-              tintOpacity={0.12}
-              blur={12}
-              intensity={1.2}
-            >
-              Sign In
-            </SpecularButton>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <button
+                onClick={() => router.push("/signup")}
+                style={{
+                  background: "rgba(255, 255, 255, 0.08)",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  color: "#fff",
+                  padding: "0.4rem 0.85rem",
+                  borderRadius: "8px",
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                Sign Up
+              </button>
+              <SpecularButton
+                size="sm"
+                onClick={goToSignIn}
+                radius={8}
+                tintOpacity={0.12}
+                blur={12}
+                intensity={1.2}
+              >
+                Sign In
+              </SpecularButton>
+            </div>
           </div>
 
           {/* Mobile hamburger */}

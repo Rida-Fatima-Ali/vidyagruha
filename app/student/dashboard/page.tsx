@@ -77,7 +77,8 @@ export default function StudentDashboardPage() {
     return `Your day at a glance: ${parts.join(", ")}.`;
   }, [data]);
 
-  const firstName = user?.name.split(" ")[0] ?? "there";
+  const displayName = user?.displayName || user?.name || "there";
+  const firstName = displayName.split(" ")[0] || "there";
 
   return (
     <PageTransition>

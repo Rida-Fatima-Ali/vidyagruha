@@ -19,6 +19,8 @@ function userFromQuery(
   return {
     id: userId ?? "stu-001",
     name: "",
+    displayName: "",
+    username: "",
     role: resolvedRole,
     email: "",
   };

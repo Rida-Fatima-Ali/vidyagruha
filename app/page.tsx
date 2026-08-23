@@ -61,15 +61,22 @@ export default function PrimaryEditorialLandingPage() {
               One unified, architectural workspace designed specifically for college students, faculty members, and institutional administrators.
             </p>
 
-            {/* Primary Action Button (Navigates directly to old sign-in/login) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-10">
+            {/* Primary Action Button (Sign In + Sign Up + Explore) */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-10">
               <button
                 onClick={() => router.push("/login")}
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#1C1917] hover:bg-[#8B1E1E] text-[#FAF9F5] text-[13px] font-medium tracking-[0.18em] uppercase transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
+                className="group inline-flex items-center justify-center gap-3 px-7 py-4 bg-[#1C1917] hover:bg-[#8B1E1E] text-[#FAF9F5] text-[13px] font-medium tracking-[0.18em] uppercase transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <span>Sign In</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
+
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-[#8B1E1E] bg-[#8B1E1E]/06 hover:bg-[#8B1E1E] hover:text-[#FAF9F5] text-[#8B1E1E] text-[13px] font-semibold tracking-[0.16em] uppercase transition-all duration-200"
+              >
+                <span>Sign Up</span>
+              </Link>
 
               <Link
                 href="/explore"
@@ -298,11 +305,18 @@ export default function PrimaryEditorialLandingPage() {
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => router.push("/login")}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#1C1917] hover:bg-[#8B1E1E] text-[#FAF9F5] text-[12px] font-medium tracking-[0.16em] uppercase transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#1C1917] hover:bg-[#8B1E1E] text-[#FAF9F5] text-[12px] font-medium tracking-[0.16em] uppercase transition-all duration-300 shadow-sm"
                 >
                   <span>Sign In</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-[#8B1E1E] bg-[#8B1E1E]/06 hover:bg-[#8B1E1E] hover:text-[#FAF9F5] text-[#8B1E1E] text-[12px] font-semibold tracking-[0.14em] uppercase transition-all duration-300"
+                >
+                  <span>Sign Up</span>
+                </Link>
 
                 <Link
                   href="/explore"
@@ -323,16 +337,17 @@ export default function PrimaryEditorialLandingPage() {
               className="lg:col-span-7 relative flex items-center justify-center lg:justify-end"
             >
               {/* Outer decorative box frame matching reference 3 */}
-              <div className="hidden md:block absolute -top-8 -left-8 w-[92%] h-[108%] border border-[#28251D]/15 pointer-events-none z-0" />
+              <div className="hidden md:block absolute -top-8 -left-8 w-[94%] h-[108%] border border-[#28251D]/15 pointer-events-none z-0" />
 
-              {/* Main Photo Card */}
-              <div className="relative z-10 w-full max-w-[500px] aspect-[16/10] overflow-hidden rounded-sm border border-[#28251D]/10 shadow-md bg-[#E9E7DF]">
+              {/* Main Photo Card - Generous, expansive, natural proportion */}
+              <div className="relative z-10 w-full max-w-[620px] h-[340px] sm:h-[420px] lg:h-[460px] overflow-hidden rounded-sm border border-[#28251D]/10 shadow-md bg-[#E9E7DF]">
                 <Image
                   src="/slide3-campus.jpg"
                   alt="VidyaGruha Architecture"
                   fill
-                  className="object-cover filter grayscale-[15%] contrast-[103%]"
-                  sizes="(max-width: 1024px) 100vw, 500px"
+                  className="object-cover object-center filter grayscale-[10%] contrast-[103%]"
+                  sizes="(max-width: 1024px) 100vw, 620px"
+                  priority
                 />
               </div>
 

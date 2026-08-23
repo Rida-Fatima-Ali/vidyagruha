@@ -1,225 +1,337 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight,
-  CalendarDays,
-  ClipboardList,
   GraduationCap,
-  Presentation,
-  ShieldCheck,
-  TriangleAlert,
   Users,
-  type LucideIcon,
+  ShieldCheck,
+  ArrowRight,
+  ArrowLeft,
+  AlertCircle,
+  Lock,
+  Mail,
+  UserCheck,
+  Sparkles,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { Brand } from "@/components/layout/brand";
-import { Badge } from "@/components/ui/badge";
-import { ROLE_DASHBOARD_PATH } from "@/constants/roles";
-import { APP_TAGLINE } from "@/constants/app";
 import type { UserRole } from "@/types/auth";
 
-interface RoleOption {
-  role: UserRole;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-}
-
-const ROLE_OPTIONS: RoleOption[] = [
+const ROLES: { id: UserRole; label: string; icon: any; hint: string }[] = [
   {
-    role: "student",
-    title: "Student",
-    description: "Attendance, assignments, materials, notices and more.",
+    id: "student",
+    label: "Student",
     icon: GraduationCap,
+    hint: "e.g. lakshyachoithani@somaiya.edu",
   },
   {
-    role: "faculty",
-    title: "Faculty",
-    description: "Take attendance and manage assignments and submissions.",
-    icon: Presentation,
+    id: "faculty",
+    label: "Faculty",
+    icon: Users,
+    hint: "e.g. varshakinge@somaiya.edu",
   },
   {
-    role: "admin",
-    title: "Administrator",
-    description: "Manage users, departments, notices and analytics.",
+    id: "admin",
+    label: "Admin",
     icon: ShieldCheck,
+    hint: "e.g. admin01",
   },
 ];
 
-const FEATURES: { icon: LucideIcon; title: string; description: string }[] = [
-  {
-    icon: CalendarDays,
-    title: "Live schedule & attendance",
-    description: "Your day at a glance, with attendance tracked per subject.",
-  },
-  {
-    icon: ClipboardList,
-    title: "All your work in one place",
-    description: "Assignments, materials and submissions — no more hunting.",
-  },
-  {
-    icon: Users,
-    title: "One campus, three views",
-    description: "Distinct experiences for students, faculty and administrators.",
-  },
+const PRESET_ACCOUNTS = [
+  { role: "student", name: "Lakshya Choithani", email: "lakshyachoithani@somaiya.edu" },
+  { role: "student", name: "Gargi Thotam", email: "gargithotam@somaiya.edu" },
+  { role: "student", name: "Rida Fatima", email: "ridafatima@somaiya.edu" },
+  { role: "student", name: "Priyansh Bhan", email: "priyanshbhan@somaiya.edu" },
+  { role: "student", name: "Tejas Nagare", email: "tejasnagare@somaiya.edu" },
+  { role: "faculty", name: "Varsha Kinge", email: "varshakinge@somaiya.edu" },
+  { role: "faculty", name: "RNP", email: "rnp@somaiya.edu" },
+  { role: "faculty", name: "NRP", email: "nrp@somaiya.edu" },
+  { role: "faculty", name: "Charu", email: "charu@somaiya.edu" },
+  { role: "admin", name: "System Administrator", email: "admin01" },
 ];
 
 export default function LoginPage() {
-  const { user, ready, login } = useAuth();
   const router = useRouter();
-  const reduceMotion = useReducedMotion();
+  const { login } = useAuth();
+  const [role, setRole] = useState<UserRole>("student");
+  const [identifier, setIdentifier] = useState("lakshyachoithani@somaiya.edu");
+  const [password, setPassword] = useState("kjsp@123");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (ready && user) {
-      void router.replace(ROLE_DASHBOARD_PATH[user.role]);
+  function handleSelectRole(newRole: UserRole) {
+    setRole(newRole);
+    setError(null);
+    if (newRole === "student") {
+      setIdentifier("lakshyachoithani@somaiya.edu");
+      setPassword("kjsp@123");
+    } else if (newRole === "faculty") {
+      setIdentifier("varshakinge@somaiya.edu");
+      setPassword("kjsp@123");
+    } else {
+      setIdentifier("admin01");
+      setPassword("kjsp@123");
     }
-  }, [ready, user, router]);
-
-  function handleSelectRole(role: UserRole) {
-    login(role);
-    void router.push(ROLE_DASHBOARD_PATH[role]);
   }
 
-  const containerVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.08 } },
-  };
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 16 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
-    },
-  };
+    const cleanId = identifier.trim();
+    if (!cleanId || !password) {
+      setError("Please enter your username/email and password.");
+      return;
+    }
+
+    // Frontend validation for student & faculty domain
+    if (role !== "admin" && cleanId !== "admin01") {
+      if (!cleanId.toLowerCase().endsWith("@somaiya.edu")) {
+        setError("Student and Faculty sign in requires a valid @somaiya.edu institutional email.");
+        return;
+      }
+    }
+
+    setLoading(true);
+
+    try {
+      // Authenticate via database auth provider
+      const result = await login(cleanId, password, role);
+
+      if (!result.success) {
+        setError(result.error || "Invalid username or password.");
+        setLoading(false);
+        return;
+      }
+
+      // Role-based redirection
+      if (role === "student") {
+        router.push("/student/dashboard");
+      } else if (role === "faculty") {
+        router.push("/faculty/dashboard");
+      } else {
+        router.push("/admin/dashboard");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="relative flex min-h-dvh overflow-hidden">
-      <section className="relative hidden w-1/2 flex-col justify-between border-r border-border p-12 xl:p-16 lg:flex">
-        <motion.div initial={reduceMotion ? false : "hidden"} animate="show" variants={containerVariants}>
-          <motion.div variants={itemVariants}>
-            <Brand size="large" />
-          </motion.div>
+    <div className="min-h-screen w-full bg-[#FAF9F5] text-[#28251D] flex flex-col justify-between selection:bg-[#8B1E1E] selection:text-[#FAF9F5]">
+      {/* Top Header */}
+      <header className="w-full bg-[#FAF9F5]/90 backdrop-blur-md border-b border-[#28251D]/08 sticky top-0 z-30">
+        <div className="max-w-[1300px] mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative h-10 w-44 sm:w-56 flex items-center">
+              <Image
+                src="/vidyagruha-logo.png"
+                alt="VidyaGruha"
+                width={240}
+                height={60}
+                priority
+                className="object-contain object-left h-9 sm:h-10 w-auto transition-opacity duration-200 group-hover:opacity-85"
+              />
+            </div>
+          </Link>
 
-          <motion.div variants={itemVariants} className="mt-16 xl:mt-20">
-            <p className="kicker text-muted-foreground">
-              Smart India Hackathon 2026 · Frontend preview
-            </p>
-            <h1 className="display-hero mt-6 text-5xl xl:text-6xl">
-              Your campus,
-              <br />
-              connected.
-            </h1>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
-              {APP_TAGLINE} A single place for students, faculty and
-              administrators to work together.
-            </p>
-          </motion.div>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/signup"
+              className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#8B1E1E] hover:underline"
+            >
+              Sign Up
+            </Link>
+            <Link
+              href="/explore"
+              className="hidden sm:inline-flex items-center gap-1 px-4 py-2 rounded-full border border-[#28251D]/15 text-[11px] font-semibold tracking-[0.14em] uppercase text-[#28251D] hover:bg-[#28251D] hover:text-[#FAF9F5] transition-all"
+            >
+              Explore Tour
+            </Link>
+          </div>
+        </div>
+      </header>
 
-          <motion.ul variants={itemVariants} className="mt-10 space-y-3.5">
-            {FEATURES.map((feature) => (
-              <li key={feature.title} className="flex items-start gap-3.5">
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/[0.07] text-primary ring-1 ring-inset ring-primary/15">
-                  <feature.icon className="h-4 w-4" aria-hidden="true" />
-                </span>
-                <span>
-                  <span className="block text-sm font-medium">{feature.title}</span>
-                  <span className="block text-sm leading-relaxed text-muted-foreground">
-                    {feature.description}
-                  </span>
-                </span>
-              </li>
-            ))}
-          </motion.ul>
-        </motion.div>
-
-        <motion.p
-          variants={itemVariants}
-          initial={reduceMotion ? false : "hidden"}
-          animate="show"
-          className="text-xs text-muted-foreground/60"
-        >
-          Mock authentication — no credentials required.
-        </motion.p>
-      </section>
-
-      <section className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
+      {/* Main Login Card */}
+      <main className="flex-1 max-w-[1200px] w-full mx-auto px-6 sm:px-10 py-10 lg:py-16 flex flex-col items-center justify-center">
         <motion.div
-          initial={reduceMotion ? false : "hidden"}
-          animate="show"
-          variants={containerVariants}
-          className="w-full max-w-md"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-md bg-[#FDFCFB] border border-[#28251D]/12 rounded-2xl p-8 sm:p-10 shadow-sm"
         >
-          <motion.div variants={itemVariants} className="mb-8 flex flex-col items-center gap-2 text-center lg:hidden">
-            <Brand size="large" />
-            <p className="text-sm text-muted-foreground">{APP_TAGLINE}</p>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <h2 className="text-center font-heading text-2xl font-semibold tracking-tight">
-              Enter your campus
-            </h2>
-            <p className="mt-1.5 text-center text-sm text-muted-foreground">
-              Choose a role to preview that view.
+          {/* Brand Logo & Welcome */}
+          <div className="text-center mb-8">
+            <div className="relative h-12 w-48 mx-auto mb-4 flex items-center justify-center">
+              <Image
+                src="/vidyagruha-logo.png"
+                alt="VidyaGruha"
+                width={220}
+                height={55}
+                className="object-contain"
+              />
+            </div>
+            <h1 className="text-2xl font-serif text-[#1C1917]">
+              Sign in to your account
+            </h1>
+            <p className="mt-1 text-xs text-[#77736B]">
+              Enter your institutional credentials to access your workspace.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants} className="mt-6 space-y-3">
-            {ROLE_OPTIONS.map((option) => (
-              <motion.button
-                key={option.role}
-                type="button"
-                onClick={() => handleSelectRole(option.role)}
-                whileHover={reduceMotion ? undefined : { y: -2 }}
-                whileTap={reduceMotion ? undefined : { scale: 0.99 }}
-                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="group flex w-full items-center gap-4 rounded-xl border border-border bg-card p-4 text-left shadow-card transition-colors duration-200 hover:border-primary/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          {/* Account Type Selection Tabs */}
+          <div className="mb-6">
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#77736B] mb-2 text-center">
+              Select Account Type
+            </label>
+            <div className="grid grid-cols-3 gap-2 bg-[#FAF9F5] p-1.5 rounded-xl border border-[#28251D]/10">
+              {ROLES.map((r) => {
+                const Icon = r.icon;
+                const isSelected = role === r.id;
+                return (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => handleSelectRole(r.id)}
+                    className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-lg text-xs font-semibold transition-all ${
+                      isSelected
+                        ? "bg-[#1C1917] text-white shadow-sm"
+                        : "text-[#77736B] hover:text-[#1C1917] hover:bg-white/50"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{r.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="mb-6 flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/8 p-3.5 text-xs text-destructive">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <p className="font-medium">{error}</p>
+            </div>
+          )}
+
+          {/* Login Form */}
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#77736B] mb-1.5">
+                {role === "admin" ? "Username" : "Email / Username"}
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  required
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder={ROLES.find((r) => r.id === role)?.hint}
+                  className="w-full rounded-xl border border-[#28251D]/15 bg-[#FAF9F5] pl-10 pr-4 py-3 text-sm text-[#1C1917] outline-none focus:border-[#8B1E1E] focus:ring-1 focus:ring-[#8B1E1E] transition-all"
+                />
+                <Mail className="w-4 h-4 text-[#A9A59D] absolute left-3.5 top-3.5" />
+              </div>
+              {role !== "admin" && (
+                <p className="mt-1 text-[11px] text-[#A9A59D]">
+                  Must end with <code className="text-[#8B1E1E]">@somaiya.edu</code>
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#77736B] mb-1.5">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full rounded-xl border border-[#28251D]/15 bg-[#FAF9F5] pl-10 pr-4 py-3 text-sm text-[#1C1917] outline-none focus:border-[#8B1E1E] focus:ring-1 focus:ring-[#8B1E1E] transition-all"
+                />
+                <Lock className="w-4 h-4 text-[#A9A59D] absolute left-3.5 top-3.5" />
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-[#1C1917] hover:bg-[#8B1E1E] text-white text-xs font-semibold uppercase tracking-widest transition-all duration-300 disabled:opacity-50"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/[0.07] text-primary ring-1 ring-inset ring-primary/15 transition-colors duration-200 group-hover:bg-primary/[0.12]">
-                  <option.icon className="h-6 w-6" aria-hidden="true" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-center gap-2 font-heading text-base font-semibold tracking-tight">
-                    {option.title}
-                    <ArrowRight
-                      className="h-4 w-4 text-muted-foreground transition-all duration-200 group-hover:translate-x-1 group-hover:text-primary"
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <span className="mt-0.5 block text-sm leading-relaxed text-muted-foreground">
-                    {option.description}
-                  </span>
-                </span>
-              </motion.button>
-            ))}
-          </motion.div>
+                {loading ? (
+                  <span>Authenticating...</span>
+                ) : (
+                  <>
+                    <span>Sign In</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
 
-          <motion.div
-            variants={itemVariants}
-            role="note"
-            className="mt-6 flex items-start gap-2.5 rounded-xl border border-warning/20 bg-warning/[0.06] px-3.5 py-2.5"
-          >
-            <TriangleAlert
-              className="mt-0.5 h-4 w-4 shrink-0 text-warning"
-              aria-hidden="true"
-            />
-            <p className="text-sm leading-relaxed text-foreground/90">
-              <span className="font-medium">Development build.</span> Mock
-              authentication only — not secure. Real sign-in arrives with the
-              backend.
+          {/* Quick Preset Selector for Easy Testing */}
+          <div className="mt-8 pt-6 border-t border-[#28251D]/08">
+            <p className="text-[10px] font-mono uppercase tracking-wider text-[#A9A59D] mb-2.5 text-center">
+              Quick Prototype Credential Presets:
             </p>
-          </motion.div>
+            <div className="flex flex-wrap gap-1.5 justify-center">
+              {PRESET_ACCOUNTS.filter((a) => a.role === role).map((acc) => (
+                <button
+                  key={acc.email}
+                  type="button"
+                  onClick={() => {
+                    setIdentifier(acc.email);
+                    setPassword("kjsp@123");
+                  }}
+                  className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
+                    identifier === acc.email
+                      ? "bg-[#8B1E1E]/10 border-[#8B1E1E] text-[#8B1E1E] font-medium"
+                      : "bg-[#FAF9F5] border-[#28251D]/10 text-[#77736B] hover:text-[#1C1917]"
+                  }`}
+                >
+                  {acc.name.split(" ")[0]}
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <motion.div variants={itemVariants} className="mt-6 flex items-center justify-center gap-2">
-            <Badge variant="secondary">SIH 2026</Badge>
-            <Badge variant="secondary">Frontend preview</Badge>
-          </motion.div>
+          {/* Link to Sign Up */}
+          <div className="text-center mt-6 text-xs text-[#77736B]">
+            Need a new account?{" "}
+            <Link href="/signup" className="font-semibold text-[#8B1E1E] hover:underline">
+              Submit registration request
+            </Link>
+          </div>
         </motion.div>
-      </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="w-full max-w-[1300px] mx-auto px-6 sm:px-10 py-6 border-t border-[#28251D]/08 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#A9A59D] tracking-wider uppercase">
+        <div>
+          <span>VidyaGruha</span> · <span>Authentication & Access Portal</span>
+        </div>
+        <div className="flex items-center gap-6 mt-2 sm:mt-0">
+          <Link href="/" className="hover:text-[#28251D] transition-colors">
+            Home
+          </Link>
+          <Link href="/signup" className="hover:text-[#28251D] transition-colors">
+            Sign Up
+          </Link>
+          <Link href="/explore" className="hover:text-[#28251D] transition-colors">
+            Explore
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -31,7 +31,16 @@ export function UserMenu() {
   }, []);
 
   if (!user) {
-    return null;
+    return (
+      <Button
+        variant="default"
+        size="sm"
+        onClick={() => router.push("/login")}
+        className="rounded-xl px-3 text-xs font-semibold gap-1.5"
+      >
+        Sign In
+      </Button>
+    );
   }
 
   function handleSignOut() {

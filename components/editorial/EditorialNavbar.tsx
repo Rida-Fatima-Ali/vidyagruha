@@ -49,19 +49,25 @@ export default function EditorialNavbar() {
           </Link>
         </nav>
 
-        {/* Right: CTA / Explore button */}
+        {/* Right: Login + Sign Up CTA */}
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/login"
             className="text-[12px] font-semibold tracking-[0.16em] uppercase text-[#1C1917] hover:text-[#8B1E1E] transition-colors"
           >
-            Sign In
+            Log In
+          </Link>
+          <Link
+            href="/signup"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#1C1917] hover:bg-[#8B1E1E] text-white text-[11px] font-semibold tracking-[0.16em] uppercase transition-all duration-300 shadow-sm"
+          >
+            <span>Sign Up</span>
           </Link>
           <Link
             href="/explore"
             className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#28251D]/15 text-[11px] font-semibold tracking-[0.16em] uppercase text-[#28251D] hover:border-[#28251D] hover:bg-[#28251D] hover:text-[#FAF9F5] transition-all duration-300"
           >
-            <span>Explore Tour</span>
+            <span>Explore</span>
             <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
           </Link>
         </div>
